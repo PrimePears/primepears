@@ -49,7 +49,7 @@ function DashboardButton() {
 }
 
 export default function NavBar({ profile }: { profile: ProfileProps | null }) {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { user } = useUser();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {

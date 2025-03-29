@@ -61,6 +61,7 @@ export default function ContactCard() {
       form.reset();
       toast("We'll get back to you as soon as possible.");
     } catch (error) {
+      console.error("Error sending email:", error);
       toast("Your message couldn't be sent. Please try again later.");
     } finally {
       setIsSubmitting(false);

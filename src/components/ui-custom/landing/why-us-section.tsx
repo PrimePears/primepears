@@ -23,7 +23,7 @@ export default function Why_Us_Section() {
         </div>
         <div className="relative w-full h-screen order-1 md:order-2">
           <Image
-            src="/about-page/pic3.jpg"
+            src="/logo/prime_pear_logo.png"
             alt="Fitness trainer working with client"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -38,7 +38,7 @@ export default function Why_Us_Section() {
         <div className="relative w-full h-screen order-1">
           <div className="absolute inset-0">
             <Image
-              src="/about-page/pic3.jpg"
+              src="/logo/prime_pear_logo.png"
               alt="Professional fitness trainers"
               fill
               className="object-cover object-center"
@@ -84,7 +84,7 @@ export default function Why_Us_Section() {
         </div>
         <div className="relative w-full h-screen order-1 md:order-2">
           <Image
-            src="/about-page/pic2.jpg"
+            src="/logo/prime_pear_logo.png"
             alt="Diverse fitness clients"
             fill
             className="object-cover"

@@ -42,7 +42,7 @@ export default async function Layout({
       </ClerkProvider>
     );
   } else {
-    const id = user?.id!;
+    // const id = user?.id!;
     // const profile = await getTrainerByClerkUserId(id);
 
     return (

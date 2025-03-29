@@ -22,7 +22,7 @@ export default function AboutUsPage() {
         </div>
         <div className="relative w-full h-screen order-1 md:order-2">
           <Image
-            src="/about-page/pic3.jpg" //TODO: Update with a more relevant image
+            src="/logo/prime_pear_logo.png" //TODO: Update with a more relevant image
             alt="Fitness trainer working with client"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -37,7 +37,7 @@ export default function AboutUsPage() {
         <div className="relative w-full h-screen order-1">
           <div className="absolute inset-0">
             <Image
-              src="/about-page/pic3.jpg" //TODO: Update with a more relevant image
+              src="/logo/prime_pear_logo.png" //TODO: Update with a more relevant image
               alt="Professional fitness trainers"
               fill
               className="object-cover object-center"
@@ -70,18 +70,18 @@ export default function AboutUsPage() {
             Our Clients
           </h1>
           <p className="text-lg md:text-xl leading-relaxed">
-            PrimePears is built for everyone—whether you're a beginner looking
-            to start your fitness journey, an athlete aiming to fine-tune your
-            performance, or someone simply trying to stay consistent with
-            healthy habits. Our clients come from all walks of life but share
-            one common goal: self-improvement. With our flexible online
-            coaching, PrimePears makes it easy to fit personal training into
-            your lifestyle, no matter how busy you are.
+            PrimePears is built for everyone—whether you&apos;re a beginner
+            looking to start your fitness journey, an athlete aiming to
+            fine-tune your performance, or someone simply trying to stay
+            consistent with healthy habits. Our clients come from all walks of
+            life but share one common goal: self-improvement. With our flexible
+            online coaching, PrimePears makes it easy to fit personal training
+            into your lifestyle, no matter how busy you are.
           </p>
         </div>
         <div className="relative w-full h-screen order-1 md:order-2">
           <Image
-            src="/about-page/pic2.jpg" //TODO: Update with a more relevant image
+            src="/logo/prime_pear_logo.png" //TODO: Update with a more relevant image
             alt="Diverse fitness clients"
             fill
             className="object-cover"
@@ -94,7 +94,7 @@ export default function AboutUsPage() {
       <section className="min-h-screen w-full grid md:grid-cols-2 items-center mb-8">
         <div className="relative w-full h-screen order-1">
           <Image
-            src="/about-page/pic3.jpg" //TODO: Update with a more relevant image
+            src="/logo/prime_pear_logo.png" //TODO: Update with a more relevant image
             alt="PrimePears mission in action"
             fill
             className="object-cover"
@@ -111,7 +111,7 @@ export default function AboutUsPage() {
             affordable, and tailored to individual needs. By bridging the gap
             between trainers and clients through technology, we empower people
             to take control of their health and fitness with expert support at
-            their fingertips. At PrimePears, we're redefining what personal
+            their fingertips. At PrimePears, we&apos;re redefining what personal
             training looks like in a digital world—one session at a time.
           </p>
         </div>
