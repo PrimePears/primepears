@@ -16,7 +16,7 @@ export default function How_To_Section() {
             How to find a personal trainer?
           </CardTitle>
           <CardDescription className="text-sm sm:text-base text-gray-500">
-            Learn online with the world's best trainers
+            Learn online with the world&apos;s best trainers
           </CardDescription>
         </CardHeader>
         <CardContent>
