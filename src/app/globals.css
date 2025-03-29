@@ -3,10 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
 
-
-}
 
 @theme inline {
   --color-custom-button-green: #188977;
@@ -123,6 +120,25 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    h1 {
+      font-size: xx-large;   
+      font-weight: 900;        
+      color: #157a66;
+  
+    }
+    h2 {
+      font-size: xx-large;   
+      font-weight: 900;        
+      color: #0259f0;
+  
+    }
+  
+    h3 {
+      font-size: 150%;       
+      font-weight: 600;        
+      color: #5c677d;
+  
+    }
   }
   body {
     @apply bg-background text-foreground;
