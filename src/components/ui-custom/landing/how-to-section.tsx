@@ -86,7 +86,7 @@ export default function How_To_Section() {
                   Step Three
                 </h3>
                 <p className="text-gray-600 text-xs sm:text-sm">
-                  Follow your trainer’s customized workout plan, get expert
+                  Follow your trainer&apos;s customized workout plan, get expert
                   guidance, and stay accountable—all online. Adjustments are
                   made as you progress to ensure you stay on track toward your
                   fitness goals.

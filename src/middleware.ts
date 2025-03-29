@@ -13,15 +13,11 @@ const isPublicRoute = createRouteMatcher([
   "/api/get-profile(.*)",
 ]);
 
-const isSignUpRoute = createRouteMatcher(["/sign-up(.*)"]);
-
-const isTrainersRoute = createRouteMatcher(["/trainers(.*)"]);
-
 export default clerkMiddleware(async (auth, req) => {
   try {
     const userAuth = await auth();
     const { userId } = userAuth;
-    const { pathname, origin } = req.nextUrl;
+    const { origin } = req.nextUrl;
 
     if (!isPublicRoute(req) && !userId) {
       return NextResponse.redirect(new URL("/sign-up", origin));
@@ -29,6 +25,7 @@ export default clerkMiddleware(async (auth, req) => {
 
     return NextResponse.next();
   } catch (e) {
+    console.error("Error in middleware:", e);
     return NextResponse.next();
   }
 });
