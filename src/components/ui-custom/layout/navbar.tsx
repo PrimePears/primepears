@@ -39,7 +39,7 @@ function DashboardButton() {
     <Link href={`/trainer-profile/dashboard/${user?.id}`}>
       <Button
         variant="default"
-        className="flex items-center gap-2 bg-color-midnight hover:bg-custom-button-hover-green"
+        className="flex items-center gap-2 bg-custom-button-green hover:bg-custom-button-hover-green"
       >
         <UserPen className="h-4 w-4" />
         <span className="hidden sm:inline">Dashboard</span>

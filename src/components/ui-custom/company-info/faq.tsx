@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronDown } from "lucide-react";
-import { FAQDisplayProps } from "@/lib/data-faq";
+import { FAQDisplayProps } from "@/lib/data/data-faq";
 
 export default function FAQDisplay({ faqs }: FAQDisplayProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);

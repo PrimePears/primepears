@@ -1,5 +1,5 @@
 import FaqSection from "@/components/ui-custom/company-info/faq";
-import { faqContent } from "@/lib/data-faq";
+import { faqContent } from "@/lib/data/data-faq";
 
 export default function FaqPage() {
   return (

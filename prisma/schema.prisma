@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Profile {
+  id             String          @id @default(uuid())
+  clerkUserId    String          @unique
+  name           String
+  email          String          @unique
+  displayName    String?        
+  profileImage   String?         
+  isTrainer      Boolean         @default(false)
+  trainerType    String?         
+  bio            String?
+  experience     String?
+  videoUrl       String
+  location       String
+  rate           Float
+  level          Int
+  
+  // Alternate contact information
+  alternateName  String?       
+  alternateEmail String?         
+
+  // Social media links
+  twitterLink    String?
+  instagramLink  String?
+  facebookLink   String?
+  youtubeLink    String?
+  
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  
+  // Relations
+  availability   Availability[]
+  certifications Certification[]
+  // New relations for booking system
+  sessionsAsTrainer Booking[]    @relation("TrainerSessions")
+  sessionsAsClient  Booking[]    @relation("ClientSessions")
+}
+
+model Availability {
+  id         String      @id @default(uuid())
+  userId     String
+  user       Profile     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day        String
+  timeRanges TimeRange[]
+}
+
+model TimeRange {
+  id             String       @id @default(uuid())
+  availabilityId String
+  availability   Availability @relation(fields: [availabilityId], references: [id], onDelete: Cascade)
+  startTime      String 
+  endTime        String
+}
+
+model Certification {
+  id     String  @id @default(uuid())
+  name   String
+  user   Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+}
+
+// New models for booking system
+enum SessionType {
+  CONSULTATION 
+  FULL_SESSION 
+}
+
+enum SessionDuration {
+  MINUTES_15 
+  MINUTES_60 
+  MINUTES_90 
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+model Booking {
+  id           String         @id @default(uuid())
+  
+  // Who is involved
+  trainerId    String
+  trainer      Profile        @relation("TrainerSessions", fields: [trainerId], references: [id])
+  clientId     String
+  client       Profile        @relation("ClientSessions", fields: [clientId], references: [id])
+  
+  // Session details
+  sessionType  SessionType
+  duration     SessionDuration
+  date         DateTime
+  startTime    String         
+  endTime      String       
+  
+  // Status and metadata
+  status       BookingStatus  @default(PENDING)
+  notes        String?        // Client notes or special requests
+  trainerNotes String?        // Private notes from trainer
+  
+  // Payment info (if applicable)
+  price        Float?         // Null for free consultations
+  isPaid       Boolean        @default(false)
+  
+  // Timestamps
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  
+  // Optional relation to reviews
+  review       Review?
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  bookingId   String   @unique
+  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  rating      Int      // 1-5 star rating
+  comment     String?  // Optional review text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+

@@ -1,3 +1,10 @@
-export default function SignInPage() {
-  return <div>Sign in page</div>;
+import { SignIn } from "@clerk/nextjs";
+
+export default function Page() {
+  return (
+    <div className="flex items-center justify-center m-8">
+      {" "}
+      <SignIn />
+    </div>
+  );
 }
