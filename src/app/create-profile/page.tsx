@@ -6,8 +6,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 type ApiResponse = {
-  message: String;
-  error?: String;
+  message: string;
+  error?: string;
 };
 async function createProfileRequest() {
   const response = await fetch("/api/create-profile", {
@@ -27,12 +27,12 @@ export default function CreateProfile() {
 
   const { mutate, isPending } = useMutation<ApiResponse, Error>({
     mutationFn: createProfileRequest,
-    onSuccess: (data) => {
+    onSuccess: () => {
       console.log("Success  - Create Profile");
 
       router.push("/create-profile");
     },
-    onError: (error) => {
+    onError: () => {
       console.log("Error - Create Profile");
     },
   });
