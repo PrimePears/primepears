@@ -52,7 +52,7 @@ export async function POST() {
       { message: "Profile create successfully" },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json({ error: error });
   }
 }

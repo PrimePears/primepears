@@ -41,6 +41,7 @@ export default function CreateProfile() {
     if (isLoaded && isSignedIn && !isPending) {
       mutate();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, isSignedIn]);
   return <div> Processing Sign In... </div>;
 }
