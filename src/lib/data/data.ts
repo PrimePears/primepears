@@ -113,6 +113,17 @@ export function formatDate(dateString: string): string {
   });
 }
 
+export function formatSessionType(type: string): string {
+  switch (type) {
+    case "CONSULTATION":
+      return "Consultation";
+    case "FULL_SESSION":
+      return "Personal Training";
+    default:
+      return type.replace("_", " ").toLowerCase();
+  }
+}
+
 export async function getAvailabilities(
   userId: string
 ): Promise<DayAvailability[]> {
