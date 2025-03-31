@@ -448,10 +448,11 @@ export default function CreateProfileForm({
         throw new Error(result.error || "Failed to update profile");
       }
 
-      toast.success("Profile updated successfully!");
+      toast("Profile updated successfully!");
+      //TODO redirect to new page
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to update profile. Please try again.");
+      toast("Failed to update profile. Please try again.");
     }
   }
 

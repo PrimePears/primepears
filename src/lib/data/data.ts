@@ -105,7 +105,7 @@ export function formatDate(dateString: string): string {
   const [year, month, day] = datePart.split("-").map(Number);
   const date = new Date(year, month - 1, day);
 
-  console.log(date);
+  
   return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",

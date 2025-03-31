@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 export async function POST() {
   try {
     const clerkUser = await currentUser();
-    console.log("Clerk User:", clerkUser);
+   
     if (!clerkUser) {
       return NextResponse.json({ error: "User not found." }, { status: 404 });
     }
@@ -29,7 +29,7 @@ export async function POST() {
     const existingProfile = await prisma.profile.findUnique({
       where: { clerkUserId: clerkUser.id },
     });
-    console.log("under existing profile ");
+   
 
     if (existingProfile) {
       return NextResponse.json({ message: "Profile already exists." });

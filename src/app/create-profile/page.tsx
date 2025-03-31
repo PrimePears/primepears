@@ -10,7 +10,7 @@ type ApiResponse = {
   error?: string;
 };
 async function createProfileRequest() {
-  console.log("Creating profile...");
+  
   const response = await fetch("/api/create-profile", {
     method: "POST",
     headers: {

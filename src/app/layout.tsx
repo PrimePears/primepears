@@ -10,8 +10,7 @@ import NavBar from "@/components/ui-custom/layout/navbar";
 import { Footer } from "@/components/ui-custom/layout/footer";
 import ReactQueryClientProvider from "../components/ui-custom/database-components/react-query-client-provider";
 import { getTrainerByClerkUserId } from "@/lib/data/data";
-// import { getTrainerByClerkUserId } from "@/lib/data";
-// import { Toaster } from "sonner";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "PrimePears",
@@ -36,7 +35,7 @@ export default async function Layout({
               {/* <Analytics /> */}
               <Footer></Footer>
             </ReactQueryClientProvider>
-            {/* <Toaster /> */}
+            <Toaster />
           </body>
         </html>
       </ClerkProvider>
@@ -54,7 +53,7 @@ export default async function Layout({
               <main>{children}</main>
               <Footer></Footer>
             </ReactQueryClientProvider>
-            {/* <Toaster /> */}
+            <Toaster />
           </body>
         </html>
       </ClerkProvider>

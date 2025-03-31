@@ -152,7 +152,7 @@ export default function Dashboard() {
 
     try {
       const response = await fetch(
-        `/api/dashboard/${selectedBooking.id}/propose-alternates`,
+        `/api/dashboard/${selectedBooking.id}/propose-alternate-time`,
         {
           method: "POST",
           headers: {
