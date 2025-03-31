@@ -1,9 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  getTrainerByClerkUserId,
-  type Certification,
-  type DayAvailability,
-} from "@/lib/data/data";
+import { getTrainerByClerkUserId } from "@/lib/data/data";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { MapPin } from "lucide-react";
 import { YouTubeEmbed } from "@next/third-parties/google";
@@ -13,8 +9,6 @@ import BookingButtons from "./booking-buttons";
 import { auth } from "@clerk/nextjs/server";
 
 interface AvailabilitySchedulerProps {
-  // certificationProp: Certification[];
-  // availabilitiesProp: DayAvailability[];
   profile: Profile;
 }
 
