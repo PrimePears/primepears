@@ -76,3 +76,23 @@ export async function getTrainerByClerkUserId(userId: string) {
 
   return user;
 }
+
+export async function getAllTrainers() {
+  const trainers = await prisma.profile.findMany({
+    where: {
+      isTrainer: true,
+    },
+  });
+  return trainers;
+}
+
+export async function getAllCertifications() {
+  try {
+    const certifications = await prisma.certification.findMany();
+
+    return certifications;
+  } catch (error) {
+    console.error("Failed to fetch certifications:", error);
+    return [];
+  }
+}

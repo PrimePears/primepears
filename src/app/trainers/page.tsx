@@ -1,19 +1,16 @@
-import { neon } from "@neondatabase/serverless";
+import { getAllCertifications, getAllTrainers } from "@/lib/data/data";
+import FilteredTrainerList from "@/components/ui-custom/trainer-list/filtered-trainer-list";
 
-export default function Page() {
-  async function create(formData: FormData) {
-    "use server";
-    // Connect to the Neon database
-    const sql = neon(`${process.env.DATABASE_URL}`);
-    const comment = formData.get("comment");
-    // Insert the comment from the form into the Postgres database
-    await sql`INSERT INTO comments (comment) VALUES (${comment})`;
-  }
+export default async function Trainers() {
+  const allCertifications = await getAllCertifications();
+  const allTrainers = await getAllTrainers();
 
   return (
-    <form action={create}>
-      <input type="text" placeholder="write a comment" name="comment" />
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <FilteredTrainerList
+        trainers={allTrainers}
+        certifications={allCertifications}
+      />
+    </div>
   );
 }
