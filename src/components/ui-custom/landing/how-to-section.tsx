@@ -25,7 +25,7 @@ export default function How_To_Section() {
             <div className="flex flex-col items-center text-center">
               <div className="w-full aspect-[4/3] relative rounded-lg overflow-hidden mb-4">
                 <Image
-                  src="/Step_One.jpg"
+                  src="/logo/prime_pear_logo.png"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 320px"
                   style={{ objectFit: "cover" }}
@@ -50,7 +50,7 @@ export default function How_To_Section() {
             <div className="flex flex-col items-center text-center">
               <div className="w-full aspect-[4/3] relative rounded-lg overflow-hidden mb-4">
                 <Image
-                  src="/Step_Two.jpg"
+                  src="/logo/prime_pear_logo.png"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 320px"
                   style={{ objectFit: "cover" }}
@@ -74,7 +74,7 @@ export default function How_To_Section() {
             <div className="flex flex-col items-center text-center">
               <div className="w-full aspect-[4/3] relative rounded-lg overflow-hidden mb-4">
                 <Image
-                  src="/Step_Three.jpg"
+                  src="/logo/prime_pear_logo.png"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 320px"
                   style={{ objectFit: "cover" }}

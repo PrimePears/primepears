@@ -10,6 +10,7 @@ type ApiResponse = {
   error?: string;
 };
 async function createProfileRequest() {
+  console.log("Creating profile...");
   const response = await fetch("/api/create-profile", {
     method: "POST",
     headers: {
@@ -32,7 +33,8 @@ export default function CreateProfile() {
 
       router.push("/create-profile");
     },
-    onError: () => {
+    onError: (error) => {
+      console.error("Error - Create Profile", error);
       console.log("Error - Create Profile");
     },
   });

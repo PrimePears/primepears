@@ -455,7 +455,7 @@ export default function CreateProfileForm({
     }
   }
 
-  function ApprovedTrainerGreeting(props: any) {
+  function ApprovedTrainerGreeting() {
     return (
       <div>
         <h1>Trainer Editing Page</h1>
@@ -464,7 +464,7 @@ export default function CreateProfileForm({
     );
   }
 
-  function NewTrainerGreeting(props: any) {
+  function NewTrainerGreeting() {
     return (
       <div>
         <h1>Thank you for choosing PrimePears!</h1>
@@ -476,8 +476,10 @@ export default function CreateProfileForm({
     );
   }
 
-  function Greeting(props: any) {
-    const isTrainer = props.isTrainer;
+  interface GreetingProps {
+    isTrainer: boolean;
+  }
+  function Greeting({ isTrainer }: GreetingProps) {
     if (isTrainer) {
       return <ApprovedTrainerGreeting />;
     }
