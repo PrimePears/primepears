@@ -9,6 +9,9 @@ import { notFound } from "next/navigation";
 
 export default async function Page() {
   const user = await currentUser();
+  if (!user) {
+    return notFound();
+  }
   const id = user?.id!;
   const profile = await getTrainerByClerkUserId(id);
   if (!profile) {
