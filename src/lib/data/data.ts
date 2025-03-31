@@ -97,3 +97,100 @@ export async function getAllCertifications() {
     return [];
   }
 }
+
+export function formatDate(dateString: string): string {
+  const datePart = dateString.split("T")[0];
+
+  // Parse the date parts
+  const [year, month, day] = datePart.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+
+  console.log(date);
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+export async function getAvailabilities(
+  userId: string
+): Promise<DayAvailability[]> {
+  try {
+    const availabilities = await prisma.availability.findMany({
+      where: { userId },
+      include: {
+        timeRanges: true,
+      },
+    });
+
+    return availabilities;
+  } catch (error) {
+    console.error("Failed to fetch availabilities:", error);
+    return [];
+  }
+}
+
+export async function getCertifications(
+  userId: string
+): Promise<Certification[]> {
+  try {
+    const certifications = await prisma.certification.findMany({
+      where: { userId },
+    });
+
+    return certifications;
+  } catch (error) {
+    console.error("Failed to fetch certifications:", error);
+    return [];
+  }
+}
+
+export async function getTrainerReviews(trainerId: string) {
+  try {
+    const reviews = await prisma.review.findMany({
+      where: {
+        booking: {
+          trainerId,
+        },
+      },
+      include: {
+        booking: {
+          include: {
+            client: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return reviews;
+  } catch (error) {
+    console.error("Error fetching trainer reviews:", error);
+    return [];
+  }
+}
+
+export async function hasCompletedBooking(
+  trainerId: string,
+  clientId?: string
+) {
+  if (!clientId) return false;
+
+  try {
+    const booking = await prisma.booking.findFirst({
+      where: {
+        trainerId,
+        clientId,
+        status: "COMPLETED",
+      },
+    });
+
+    return !!booking;
+  } catch (error) {
+    console.error("Error checking completed bookings:", error);
+    return false;
+  }
+}
