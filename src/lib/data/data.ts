@@ -9,6 +9,7 @@ export interface Profile {
   isTrainer: boolean;
   trainerType: string | null;
   bio: string | null;
+  profileImage: string | null;
   experience: string | null;
   videoUrl: string;
   twitterLink: string | null;

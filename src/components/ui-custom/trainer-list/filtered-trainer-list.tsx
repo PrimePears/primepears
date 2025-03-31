@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import type { Certification } from "@/lib/data/data";
+import type { Certification, Profile } from "@/lib/data/data";
 import TrainerList from "./trainer-list";
 import PaginationControls from "../trainer-list/pagination/pagination-controls";
 import SearchBar from "../trainer-list/search/search-bar";
 
 interface FilteredTrainerListProps {
-  trainers: any[];
+  trainers: Profile[];
   certifications: Certification[];
 }
 

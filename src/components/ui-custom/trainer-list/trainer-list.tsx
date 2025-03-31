@@ -1,4 +1,4 @@
-import type { Certification } from "@/lib/data/data";
+import type { Certification, Profile } from "@/lib/data/data";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -10,7 +10,7 @@ import Link from "next/link";
 import { YouTubeEmbed } from "@next/third-parties/google";
 
 interface TrainerListProps {
-  trainers?: any[];
+  trainers?: Profile[];
   certificationProp: Certification[];
 }
 
@@ -115,7 +115,7 @@ export default function TrainerList({
                       </Link>
                       <p className="text-muted-foreground text-xs mt-1 mx-auto sm:ml-auto sm:mr-0 max-w-[200px]">
                         Have a free 15-minute call with this trainer to see if
-                        it's the right fit.
+                        it&apos;s the right fit.
                       </p>
                     </div>
                   </div>
