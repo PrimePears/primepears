@@ -204,7 +204,7 @@ export default function BookingButtons({
   const { isSignedIn } = useAuth();
   const { user } = useUser();
 
-  // Current date/time for validation
+  /* eslint-disable */
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [minTime, setMinTime] = useState<string | undefined>(undefined);
 

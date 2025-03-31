@@ -25,8 +25,11 @@ export default async function PersonProfilePage({
 }) {
   const paramsId = await params;
   const profile = await getTrainerById(paramsId.id);
-  const availabilities = await getAvailabilities(profile?.id!);
-  const certifications = await getCertifications(profile?.id!);
+  if (!profile) {
+    notFound();
+  }
+  const availabilities = await getAvailabilities(profile?.id);
+  const certifications = await getCertifications(profile?.id);
 
   const { userId } = await auth();
 
@@ -63,8 +66,8 @@ export default async function PersonProfilePage({
         <CardContent className="space-y-4">
           <TrainerCard
             profile={profile!}
-            availabilitiesProp={availabilities}
-            certificationProp={certifications}
+            // availabilitiesProp={availabilities}
+            // certificationProp={certifications}
           />
 
           <TrainerInfoSection

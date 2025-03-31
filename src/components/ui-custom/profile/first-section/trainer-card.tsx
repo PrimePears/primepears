@@ -5,7 +5,6 @@ import {
   type DayAvailability,
 } from "@/lib/data/data";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { Badge } from "@/components/ui/badge";
 import { MapPin } from "lucide-react";
 import { YouTubeEmbed } from "@next/third-parties/google";
 import type { Profile } from "@prisma/client";
@@ -14,14 +13,12 @@ import BookingButtons from "./booking-buttons";
 import { auth } from "@clerk/nextjs/server";
 
 interface AvailabilitySchedulerProps {
-  certificationProp: Certification[];
-  availabilitiesProp: DayAvailability[];
+  // certificationProp: Certification[];
+  // availabilitiesProp: DayAvailability[];
   profile: Profile;
 }
 
 export default async function TrainerCard({
-  certificationProp = [],
-  availabilitiesProp = [],
   profile,
 }: AvailabilitySchedulerProps) {
   const { userId } = await auth();

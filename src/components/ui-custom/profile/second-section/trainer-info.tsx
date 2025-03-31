@@ -36,7 +36,6 @@ export default function TrainerInfoSection({
             <AvailabilityCard
               availabilitySlots={availabilitySlots}
               className="h-full flex-1"
-              layout="row"
             />
           </div>
         </div>

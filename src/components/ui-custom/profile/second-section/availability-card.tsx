@@ -10,14 +10,13 @@ interface AvailabilityCardProps {
   title?: string;
   availabilitySlots: AvailabilitySlot[];
   className?: string;
-  layout?: "grid" | "row";
 }
 
 export default function AvailabilityCard({
   title = "Availability",
   availabilitySlots,
   className,
-  layout = "row",
+
 }: AvailabilityCardProps) {
   return (
     <Card className={`w-full flex flex-col ${className || ""}`}>
