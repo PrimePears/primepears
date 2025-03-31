@@ -82,6 +82,7 @@ export default function Dashboard() {
       const data = await response.json();
       setBookingsData(data);
     } catch (error) {
+      void error;
       toast("Failed to load your sessions. Please try again.");
     } finally {
       setIsLoading(false);
