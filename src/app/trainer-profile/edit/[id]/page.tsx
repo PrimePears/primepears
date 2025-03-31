@@ -12,7 +12,7 @@ export default async function Page() {
   if (!user) {
     return notFound();
   }
-  const id = user?.id!;
+  const id = user?.id;
   const profile = await getTrainerByClerkUserId(id);
   if (!profile) {
     return notFound();
