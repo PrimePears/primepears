@@ -14,7 +14,7 @@ import { getTrainerByClerkUserId } from "@/lib/data/data";
 // import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "Trainer Finder",
+  title: "PrimePears",
   description: "Find trainers anywhere",
 };
 
