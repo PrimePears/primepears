@@ -41,10 +41,6 @@ export default function TrainerList({
                   <div className="flex flex-col sm:flex-row gap-4 lg:flex-1 w-full items-center">
                     {/* Left: Profile Image */}
 
-
-
-
-                    
                     <Link
                       href={`/trainers/${trainer.id}`}
                       key={trainer.id}
@@ -69,7 +65,9 @@ export default function TrainerList({
                     <div className="flex-1 text-center sm:text-left self-center">
                       <Link href={`/trainers/${trainer.id}`} key={trainer.id}>
                         <h2 className="text-xl font-semibold text-foreground">
-                          {trainer.name}
+                          {trainer.alternateName
+                            ? trainer.alternateName
+                            : trainer.name}
                         </h2>
                       </Link>
 

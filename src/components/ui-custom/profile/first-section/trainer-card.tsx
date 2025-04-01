@@ -26,22 +26,22 @@ export default async function TrainerCard({
     profile.twitterLink && {
       name: "Twitter",
       icon: TwitterIcon,
-      url: profile.twitterLink,
+      url: "https://x.com/" + profile.twitterLink,
     },
     profile.facebookLink && {
       name: "Facebook",
       icon: FacebookIcon,
-      url: profile.facebookLink,
+      url: "https://www.facebook.com/" + profile.facebookLink,
     },
     profile.instagramLink && {
       name: "Instagram",
       icon: InstagramIcon,
-      url: profile.instagramLink,
+      url: "https://www.instagram.com/" + profile.instagramLink,
     },
     profile.youtubeLink && {
       name: "YouTube",
       icon: YoutubeIcon,
-      url: profile.youtubeLink,
+      url: "https://www.youtube.com/@" + profile.youtubeLink,
     },
   ].filter(Boolean); // Filter out null/undefined values
 
@@ -49,6 +49,10 @@ export default async function TrainerCard({
   // if (!url) {
   //   url = url || "dQw4w9WgXcQ"; // Fallback to a default video ID if extraction fails
   // }
+
+  const displayName = profile.alternateName
+    ? profile.alternateName
+    : profile.name;
 
   return (
     <div className="flex flex-col items-center mx-auto w-[95%] sm:w-[90%] md:w-4/5">
@@ -70,7 +74,7 @@ export default async function TrainerCard({
             {/* Middle: Trainer Details */}
             <div className="flex-[2] text-center md:text-left">
               <h2 className="text-xl font-semibold text-foreground">
-                {profile?.name}
+                {displayName}
               </h2>
               <div className="mt-1">
                 <p className="text-sm">

@@ -35,7 +35,14 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { X, PlusCircle, Clock, Trash2, LinkIcon } from "lucide-react";
+import {
+  X,
+  PlusCircle,
+  Clock,
+  Trash2,
+  LinkIcon,
+  HelpCircle,
+} from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import AvailabilityCard from "./availability-card";
@@ -48,6 +55,7 @@ import {
   CreateProfileFormSchema,
   type SocialMediaLink as SocialMediaLinkType,
 } from "@/app/schemas/profile";
+import { SocialMediaHelpDialog } from "./social-media-help-dialog";
 
 // Define the availability slot interface
 interface AvailabilitySlot {
@@ -142,6 +150,14 @@ export default function CreateProfileForm({
   const [alternateEmail, setAlternateEmail] = useState(
     profile.alternateEmail || ""
   );
+
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
+
+  const openHelpDialog = (platform: string) => {
+    setSelectedPlatform(platform);
+    setHelpOpen(true);
+  };
 
   // Initialize social media links from profile data
   // const hasSocialMedia = !!(
@@ -716,18 +732,7 @@ export default function CreateProfileForm({
           />
 
           {/* Social Media Links Toggle */}
-          {/* <div className="flex items-center space-x-2">
-            <Checkbox
-              id="social-media"
-              checked={showSocialMedia}
-              onCheckedChange={(checked) =>
-                setShowSocialMedia(checked === true)
-              }
-            />
-            <Label htmlFor="social-media">Add social media links</Label>
-          </div> */}
 
-          {/* Social Media Links Section */}
           {/* <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -757,90 +762,23 @@ export default function CreateProfileForm({
                         <SelectItem value="instagram">Instagram</SelectItem>
                         <SelectItem value="facebook">Facebook</SelectItem>
                         <SelectItem value="twitter">Twitter</SelectItem>
-
                         <SelectItem value="youtube">YouTube</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="col-span-7">
-                    <Label htmlFor={`url-${link.id}`}>URL</Label>
-                    <Input
-                      id={`url-${link.id}`}
-                      placeholder="https://..."
-                      value={link.url}
-                      onChange={(e) =>
-                        updateSocialMediaLink(link.id, "url", e.target.value)
-                      }
-                    />
-                  </div>
-                  <div className="col-span-1">
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => removeSocialMediaLink(link.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-
-              <Button
-                type="button"
-                variant="outline"
-                onClick={addSocialMediaLink}
-                className="w-full"
-              >
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Add Social Media Link
-              </Button>
-            </CardContent>
-          </Card> */}
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <LinkIcon className="h-5 w-5" />
-                Social Media Links
-              </CardTitle>
-              <CardDescription>Add your social media profiles</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {socialMediaLinks.map((link) => (
-                <div
-                  key={link.id}
-                  className="grid grid-cols-12 gap-3 items-end"
-                >
-                  <div className="col-span-4">
-                    <Label htmlFor={`platform-${link.id}`}>Platform</Label>
-                    <Select
-                      value={link.platform}
-                      onValueChange={(value) =>
-                        updateSocialMediaLink(link.id, "platform", value)
-                      }
-                    >
-                      <SelectTrigger id={`platform-${link.id}`}>
-                        <SelectValue placeholder="Select platform" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="instagram">Instagram</SelectItem>
-                        <SelectItem value="facebook">Facebook</SelectItem>
-                        <SelectItem value="twitter">Twitter</SelectItem>
-                        <SelectItem value="youtube">YouTube</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="col-span-7">
-                    <Label htmlFor={`url-${link.id}`}>URL</Label>
-                    <Input
-                      id={`url-${link.id}`}
-                      placeholder="https://..."
-                      value={link.url}
-                      onChange={(e) =>
-                        updateSocialMediaLink(link.id, "url", e.target.value)
-                      }
-                    />
+                    <Label htmlFor={`url-${link.id}`}>Username</Label>
+                    <div className="flex">
+                      <p className="mt-1 pr-1">@</p>
+                      <Input
+                        id={`url-${link.id}`}
+                        placeholder="https://..."
+                        value={link.url}
+                        onChange={(e) =>
+                          updateSocialMediaLink(link.id, "url", e.target.value)
+                        }
+                      />
+                    </div>
                   </div>
                   <div className="col-span-1">
                     <Button
@@ -871,7 +809,213 @@ export default function CreateProfileForm({
                 {socialMediaLinks.length}/4 social media links added
               </div>
             </CardContent>
+          </Card> */}
+          {/* <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <LinkIcon className="h-5 w-5" />
+                Social Media Links
+              </CardTitle>
+              <CardDescription>Add your social media profiles</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {socialMediaLinks.map((link) => (
+                <div
+                  key={link.id}
+                  className="grid grid-cols-12 gap-3 items-end"
+                >
+                  <div className="col-span-4">
+                    <Label htmlFor={`platform-${link.id}`}>Platform</Label>
+                    <Select
+                      value={link.platform}
+                      onValueChange={(value) =>
+                        updateSocialMediaLink(link.id, "platform", value)
+                      }
+                    >
+                      <SelectTrigger id={`platform-${link.id}`}>
+                        <SelectValue placeholder="Select platform" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="instagram">Instagram</SelectItem>
+                        <SelectItem value="facebook">Facebook</SelectItem>
+                        <SelectItem value="twitter">Twitter</SelectItem>
+                        <SelectItem value="youtube">YouTube</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="col-span-6">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor={`url-${link.id}`}>Username</Label>
+                      {link.platform && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 px-1 text-muted-foreground"
+                          onClick={() => openHelpDialog(link.platform!)}
+                        >
+                          <HelpCircle className="h-3.5 w-3.5 mr-1" />
+                          <span className="text-xs">Find username</span>
+                        </Button>
+                      )}
+                    </div>
+                    <div className="flex">
+                      <p className="mt-1 pr-1">@</p>
+                      <Input
+                        id={`url-${link.id}`}
+                        placeholder="username"
+                        value={link.url}
+                        onChange={(e) =>
+                          updateSocialMediaLink(link.id, "url", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-2">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => removeSocialMediaLink(link.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+
+              {socialMediaLinks.length < 4 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={addSocialMediaLink}
+                  className="w-full"
+                >
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Add Social Media Link
+                </Button>
+              )}
+
+              <div className="text-sm text-muted-foreground text-right">
+                {socialMediaLinks.length}/4 social media links added
+              </div>
+            </CardContent>
+          </Card> */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <LinkIcon className="h-5 w-5" />
+                Social Media Links
+              </CardTitle>
+              <CardDescription>Add your social media profiles</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Header row with labels */}
+              <div className="grid grid-cols-12 gap-3 mb-2">
+                <div className="col-span-5">
+                  <Label>Platform</Label>
+                </div>
+                <div className="col-span-6">
+                  <Label>Username</Label>
+                </div>
+                <div className="col-span-1">
+                  {/* Empty space for alignment with delete buttons */}
+                </div>
+              </div>
+
+              {socialMediaLinks.map((link) => (
+                <div
+                  key={link.id}
+                  className="grid grid-cols-12 gap-3 items-center"
+                >
+                  <div className="col-span-5">
+                    <Select
+                      value={link.platform}
+                      onValueChange={(value) =>
+                        updateSocialMediaLink(link.id, "platform", value)
+                      }
+                    >
+                      <SelectTrigger
+                        id={`platform-${link.id}`}
+                        className="w-full"
+                      >
+                        <SelectValue placeholder="Select platform" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="instagram">Instagram</SelectItem>
+                        <SelectItem value="facebook">Facebook</SelectItem>
+                        <SelectItem value="twitter">Twitter</SelectItem>
+                        <SelectItem value="youtube">YouTube</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="col-span-6">
+                    <div className="flex w-full">
+                      <div className="flex items-center flex-grow">
+                        <span className="mr-1">@</span>
+                        <Input
+                          id={`url-${link.id}`}
+                          placeholder="username"
+                          value={link.url}
+                          onChange={(e) =>
+                            updateSocialMediaLink(
+                              link.id,
+                              "url",
+                              e.target.value
+                            )
+                          }
+                          className="w-full"
+                        />
+                      </div>
+                      {link.platform && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-9 ml-2 text-muted-foreground shrink-0"
+                          onClick={() => openHelpDialog(link.platform!)}
+                        >
+                          <HelpCircle className="h-3.5 w-3.5 mr-1" />
+                          <span className="text-xs">Find</span>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-span-1 flex justify-end">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => removeSocialMediaLink(link.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+
+              {socialMediaLinks.length < 4 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={addSocialMediaLink}
+                  className="w-full"
+                >
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Add Social Media Link
+                </Button>
+              )}
+
+              <div className="text-sm text-muted-foreground text-right">
+                {socialMediaLinks.length}/4 social media links added
+              </div>
+            </CardContent>
           </Card>
+          <SocialMediaHelpDialog
+            open={helpOpen}
+            onOpenChange={setHelpOpen}
+            platform={selectedPlatform}
+          />
           {/* Certifications Section */}
           <Card>
             <CardHeader>
