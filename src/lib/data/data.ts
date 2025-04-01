@@ -227,6 +227,7 @@ export function extractYouTubeId(url: string) {
 
     return null;
   } catch (error) {
+    void error;
     // If URL parsing fails, try a simpler approach
     const watchIndex = url.indexOf("/watch?v=");
     if (watchIndex !== -1) {

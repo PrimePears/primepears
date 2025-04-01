@@ -391,14 +391,6 @@ export default function CreateProfileForm({
     try {
       // Update availability data before submission
       updateAvailabilityData();
-      const youtubeVideoId = extractYouTubeId(values.videoUrl);
-      // Then you can store just the ID or construct an embed URL
-      console.log("youtubeVideoId", youtubeVideoId);
-      const embedUrl = youtubeVideoId
-        ? youtubeVideoId
-        : null;
-
-      console.log("embedUrl", embedUrl);
 
       // Map social media links to both formats
       const twitterLink =
@@ -442,7 +434,7 @@ export default function CreateProfileForm({
         twitterLink: twitterLink ? twitterLink : null,
         instagramLink: instagramLink ? instagramLink : null,
         facebookLink: facebookLink ? facebookLink : null,
-        youtubeLink: embedUrl ? embedUrl : null,
+        youtubeLink: youtubeLink ? youtubeLink : null,
       };
       console.log("completeData", completeData);
       // Send data to the API
