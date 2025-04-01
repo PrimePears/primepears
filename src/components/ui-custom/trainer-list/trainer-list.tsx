@@ -23,7 +23,7 @@ export default function TrainerList({
   certificationProp = [],
 }: TrainerListProps) {
   const certifications = certificationProp;
-  //TODO fix layout on medium screens
+
   return (
     <div className="flex flex-col items-center p-10 pt-2 pb-0 min-h-screen">
       <h1 className="text-2xl font-semibold text-foreground mb-6">
@@ -34,20 +34,25 @@ export default function TrainerList({
       <div className="w-full md:w-11/12 lg:w-4/5">
         {trainers.length > 0 ? (
           trainers.map((trainer) => (
-            <Card key={trainer.id} className="mb-6 ">
+            <Card key={trainer.id} className="mb-6 overflow-hidden">
               <CardContent className="p-4 sm:p-6">
-                <div className="flex flex-col items-center lg:flex-row gap-4">
+                <div className="flex flex-col lg:flex-row gap-4 items-center">
                   {/* Main content */}
-                  <div className="flex flex-col items-center sm:flex-row gap-4 lg:w-[65%]">
+                  <div className="flex flex-col sm:flex-row gap-4 lg:flex-1 w-full items-center">
                     {/* Left: Profile Image */}
+
+
+
+
+                    
                     <Link
                       href={`/trainers/${trainer.id}`}
                       key={trainer.id}
                       className="flex-shrink-0 mx-auto sm:mx-0"
                     >
-                      <Avatar className="w-40 h-40 overflow-hidden rounded-none rounded-md">
+                      {/* Updated Avatar to match TrainerCard styling */}
+                      <Avatar className="w-48 h-48 rounded-md overflow-hidden flex items-center">
                         <AvatarImage
-                          className="rounded-none"
                           src={
                             trainer?.profileImage
                               ? `/profile-pictures/${trainer.profileImage}`
@@ -61,7 +66,7 @@ export default function TrainerList({
                     </Link>
 
                     {/* Middle: Trainer Details */}
-                    <div className="flex-1 text-center sm:text-left">
+                    <div className="flex-1 text-center sm:text-left self-center">
                       <Link href={`/trainers/${trainer.id}`} key={trainer.id}>
                         <h2 className="text-xl font-semibold text-foreground">
                           {trainer.name}
@@ -84,7 +89,7 @@ export default function TrainerList({
                               <Badge
                                 key={cert.id}
                                 variant="outline"
-                                className="bg-green-200 text-green-800"
+                                className="bg-green-200 text-green-800 max-w-[150px] whitespace-normal text-center h-auto py-1"
                               >
                                 {cert.name}
                               </Badge>
@@ -104,7 +109,7 @@ export default function TrainerList({
                     </div>
 
                     {/* Right: Booking & Pricing */}
-                    <div className="text-center sm:text-right flex-shrink-0 mt-4 sm:mt-0">
+                    <div className="text-center sm:text-right flex-shrink-0 mt-4 sm:mt-0 self-center">
                       <p className="text-muted-foreground text-sm">
                         Online:{" "}
                         <span className="text-green-600 font-semibold">
@@ -122,13 +127,21 @@ export default function TrainerList({
                       </p>
                     </div>
                   </div>
-                  {/* YouTube embed - takes 100% width on mobile, ~35% on large screens */}{" "}
-                  <div className="w-full lg:w-[30%] min-w-[300px] mt-4 lg:mt-0">
-                    <div className="relative rounded-lg overflow-hidden bg-black aspect-w-16 aspect-h-9">
-                      <YouTubeEmbed
-                        videoid={extractYouTubeId(trainer.videoUrl) || ""}
-                        style="absolute top-0 left-0 w-full h-full"
-                      />
+
+                  {/* YouTube embed */}
+                  <div className="w-full lg:w-[30%] lg:max-w-[350px] mt-4 lg:mt-0 flex-shrink-0 self-center">
+                    <div
+                      className="relative w-full overflow-hidden bg-black rounded-lg"
+                      style={{ paddingTop: "56.25%" }}
+                    >
+                      {trainer.videoUrl && (
+                        <div className="absolute inset-0">
+                          <YouTubeEmbed
+                            videoid={extractYouTubeId(trainer.videoUrl) || ""}
+                            style="width:100%;height:100%;"
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
