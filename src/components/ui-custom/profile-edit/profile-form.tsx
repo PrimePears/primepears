@@ -40,7 +40,6 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import AvailabilityCard from "./availability-card";
 import {
-  extractYouTubeId,
   type Certification,
   type DayAvailability,
   type Profile,
