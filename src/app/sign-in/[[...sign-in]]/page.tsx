@@ -4,7 +4,7 @@ export default function Page() {
   return (
     <div className="flex items-center justify-center m-8">
       {" "}
-      <SignIn />
+      <SignIn forceRedirectUrl="/create-profile" />
     </div>
   );
 }
