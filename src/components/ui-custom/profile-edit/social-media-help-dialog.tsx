@@ -141,7 +141,9 @@ export function SocialMediaHelpDialog({
             <p>To find your YouTube username or handle:</p>
             <ol className="list-decimal pl-5 space-y-1">
               <li>Go to YouTube and sign in</li>
-              <li>Click on your profile picture and go to "Your channel"</li>
+              <li>
+                Click on your profile picture and go to &quot;Your channel&quot;
+              </li>
               <li>
                 Look for your handle in the URL: youtube.com/@
                 <strong>handle</strong>
