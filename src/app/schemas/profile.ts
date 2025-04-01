@@ -47,7 +47,7 @@ export const CreateProfileFormSchema = z.object({
     })
     .optional(),
   location: z.string(),
-  level: z.coerce.number().min(1).max(5),
+  // level: z.coerce.number().min(1).max(5),
   rate: z.coerce.number().min(1),
   bio: z.string().optional(),
   experience: z.string().optional(),

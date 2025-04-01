@@ -39,7 +39,12 @@ import { X, PlusCircle, Clock, Trash2, LinkIcon } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import AvailabilityCard from "./availability-card";
-import type { Certification, DayAvailability, Profile } from "@/lib/data/data";
+import {
+  extractYouTubeId,
+  type Certification,
+  type DayAvailability,
+  type Profile,
+} from "@/lib/data/data";
 import {
   CreateProfileFormSchema,
   type SocialMediaLink as SocialMediaLinkType,
@@ -209,7 +214,7 @@ export default function CreateProfileForm({
       name: profile.name,
       email: profile.email,
       location: profile.location ?? "",
-      level: profile.level,
+      // level: profile.level,
       rate: profile.rate,
       bio: profile.bio ?? "",
       experience: profile.experience ?? "",
@@ -386,6 +391,14 @@ export default function CreateProfileForm({
     try {
       // Update availability data before submission
       updateAvailabilityData();
+      const youtubeVideoId = extractYouTubeId(values.videoUrl);
+      // Then you can store just the ID or construct an embed URL
+      console.log("youtubeVideoId", youtubeVideoId);
+      const embedUrl = youtubeVideoId
+        ? youtubeVideoId
+        : null;
+
+      console.log("embedUrl", embedUrl);
 
       // Map social media links to both formats
       const twitterLink =
@@ -429,7 +442,7 @@ export default function CreateProfileForm({
         twitterLink: twitterLink ? twitterLink : null,
         instagramLink: instagramLink ? instagramLink : null,
         facebookLink: facebookLink ? facebookLink : null,
-        youtubeLink: youtubeLink ? youtubeLink : null,
+        youtubeLink: embedUrl ? embedUrl : null,
       };
       console.log("completeData", completeData);
       // Send data to the API
@@ -498,18 +511,19 @@ export default function CreateProfileForm({
           className="space-y-8 max-w-3xl mx-auto"
         >
           {/* Trainer Type Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Trainer Type</CardTitle>
-              <CardDescription>Select your specialization</CardDescription>
+          <Card className="w-full mx-auto">
+            <CardHeader className="text-center">
+              <CardTitle className="text-center">Trainer Type</CardTitle>
+              <CardDescription className="text-center">
+                Select your specialization
+              </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-col items-center">
               <FormField
                 control={form.control}
                 name="trainerType"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Trainer Type</FormLabel>
+                  <FormItem className="w-full">
                     <Select
                       value={field.value}
                       onValueChange={(value) => {
@@ -517,7 +531,7 @@ export default function CreateProfileForm({
                         setTrainerType(value);
                       }}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="w-3/4 mx-auto min-w-[240px]">
                         <SelectValue placeholder="Select trainer type" />
                       </SelectTrigger>
                       <SelectContent>
@@ -543,7 +557,12 @@ export default function CreateProfileForm({
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Name" type="text" {...field} />
+                      <Input
+                        placeholder="Name"
+                        type="text"
+                        {...field}
+                        disabled
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -559,7 +578,12 @@ export default function CreateProfileForm({
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email" type="email" {...field} />
+                      <Input
+                        placeholder="Email"
+                        type="email"
+                        {...field}
+                        disabled
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -584,9 +608,11 @@ export default function CreateProfileForm({
 
           {/* Alternate Contact Info Section */}
           {showAlternateContact && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 border rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 border rounded-lg ">
               <div>
-                <Label htmlFor="alternate-name">Alternate Name</Label>
+                <Label htmlFor="alternate-name" className="mb-2">
+                  Alternate Name
+                </Label>
                 <Input
                   id="alternate-name"
                   placeholder="Alternate Name"
@@ -595,7 +621,9 @@ export default function CreateProfileForm({
                 />
               </div>
               <div>
-                <Label htmlFor="alternate-email">Alternate Email</Label>
+                <Label htmlFor="alternate-email" className="mb-2">
+                  Alternate Email
+                </Label>
                 <Input
                   id="alternate-email"
                   placeholder="Alternate Email"
@@ -623,38 +651,20 @@ export default function CreateProfileForm({
           />
 
           {/* Level and Rate Section */}
-          <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-6">
-              <FormField
-                control={form.control}
-                name="level"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Level</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Level" type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="col-span-6">
-              <FormField
-                control={form.control}
-                name="rate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Rate</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Rate" type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+          <div className="col-span-6">
+            <FormField
+              control={form.control}
+              name="rate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rate</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Rate" type="number" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           {/* Bio Section */}
@@ -727,7 +737,7 @@ export default function CreateProfileForm({
           </div> */}
 
           {/* Social Media Links Section */}
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <LinkIcon className="h-5 w-5" />
@@ -795,8 +805,82 @@ export default function CreateProfileForm({
                 Add Social Media Link
               </Button>
             </CardContent>
-          </Card>
+          </Card> */}
 
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <LinkIcon className="h-5 w-5" />
+                Social Media Links
+              </CardTitle>
+              <CardDescription>Add your social media profiles</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {socialMediaLinks.map((link) => (
+                <div
+                  key={link.id}
+                  className="grid grid-cols-12 gap-3 items-end"
+                >
+                  <div className="col-span-4">
+                    <Label htmlFor={`platform-${link.id}`}>Platform</Label>
+                    <Select
+                      value={link.platform}
+                      onValueChange={(value) =>
+                        updateSocialMediaLink(link.id, "platform", value)
+                      }
+                    >
+                      <SelectTrigger id={`platform-${link.id}`}>
+                        <SelectValue placeholder="Select platform" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="instagram">Instagram</SelectItem>
+                        <SelectItem value="facebook">Facebook</SelectItem>
+                        <SelectItem value="twitter">Twitter</SelectItem>
+                        <SelectItem value="youtube">YouTube</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="col-span-7">
+                    <Label htmlFor={`url-${link.id}`}>URL</Label>
+                    <Input
+                      id={`url-${link.id}`}
+                      placeholder="https://..."
+                      value={link.url}
+                      onChange={(e) =>
+                        updateSocialMediaLink(link.id, "url", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => removeSocialMediaLink(link.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+
+              {socialMediaLinks.length < 4 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={addSocialMediaLink}
+                  className="w-full"
+                >
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Add Social Media Link
+                </Button>
+              )}
+
+              <div className="text-sm text-muted-foreground text-right">
+                {socialMediaLinks.length}/4 social media links added
+              </div>
+            </CardContent>
+          </Card>
           {/* Certifications Section */}
           <Card>
             <CardHeader>

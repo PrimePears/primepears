@@ -25,7 +25,6 @@ export async function POST(request: NextRequest) {
       name,
       email,
       location,
-      level,
       rate,
       bio,
       experience,
@@ -41,6 +40,7 @@ export async function POST(request: NextRequest) {
     const { clerkUserId, id } = body;
     const availability = body.availability || [];
     const certifications = body.certifications || [];
+    const level = 1;
 
     // Handle alternate contact information
     const alternateContact = body.alternateContact || null;

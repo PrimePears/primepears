@@ -134,16 +134,16 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
             <SignedIn>
               <div className="flex items-center space-x-2">
                 {user?.imageUrl ? (
-                  <Link href={`/trainer-profile/edit/${user.id}`}>
-                    <Image
-                      src={user.imageUrl || "/defaultAvatar.jpg"}
-                      alt="Profile Picture"
-                      width={35}
-                      height={35}
-                      className="rounded-md"
-                    />
-                  </Link>
+                  // <Link href={`/trainer-profile/edit/${user.id}`}>
+                  <Image
+                    src={user.imageUrl || "/defaultAvatar.jpg"}
+                    alt="Profile Picture"
+                    width={35}
+                    height={35}
+                    className="rounded-md"
+                  />
                 ) : (
+                  // </Link>
                   <div className="w-8 h-8 bg-gray-300 "></div>
                 )}
                 {profile?.isTrainer && <DashboardButton />}

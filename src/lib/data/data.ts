@@ -105,7 +105,6 @@ export function formatDate(dateString: string): string {
   const [year, month, day] = datePart.split("-").map(Number);
   const date = new Date(year, month - 1, day);
 
-  
   return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -203,5 +202,46 @@ export async function hasCompletedBooking(
   } catch (error) {
     console.error("Error checking completed bookings:", error);
     return false;
+  }
+}
+
+export function extractYouTubeId(url: string) {
+  // Check if the URL is provided
+  if (!url) return null;
+
+  try {
+    // Method 1: Using regular expression
+    const regExp =
+      /^.*(youtu.be\/|v\/|watch\?v=|\/videos\/|embed\/|watch\?.*&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+
+    if (match && match[2].length === 11) {
+      return match[2];
+    }
+
+    // Method 2: Using URL parsing (more specific to the /watch?v= format)
+    const urlObj = new URL(url);
+    if (urlObj.pathname === "/watch") {
+      return urlObj.searchParams.get("v");
+    }
+
+    return null;
+  } catch (error) {
+    // If URL parsing fails, try a simpler approach
+    const watchIndex = url.indexOf("/watch?v=");
+    if (watchIndex !== -1) {
+      // Extract everything after '/watch?v='
+      let id = url.substring(watchIndex + 9);
+
+      // Remove any additional parameters
+      const ampIndex = id.indexOf("&");
+      if (ampIndex !== -1) {
+        id = id.substring(0, ampIndex);
+      }
+
+      return id;
+    }
+
+    return null;
   }
 }

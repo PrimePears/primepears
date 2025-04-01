@@ -1,4 +1,8 @@
-import type { Certification, Profile } from "@/lib/data/data";
+import {
+  extractYouTubeId,
+  type Certification,
+  type Profile,
+} from "@/lib/data/data";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,7 +23,7 @@ export default function TrainerList({
   certificationProp = [],
 }: TrainerListProps) {
   const certifications = certificationProp;
-
+  //TODO fix layout on medium screens
   return (
     <div className="flex flex-col items-center p-10 pt-2 pb-0 min-h-screen">
       <h1 className="text-2xl font-semibold text-foreground mb-6">
@@ -34,7 +38,6 @@ export default function TrainerList({
               <CardContent className="p-4 sm:p-6">
                 <div className="flex flex-col items-center lg:flex-row gap-4">
                   {/* Main content */}
-
                   <div className="flex flex-col items-center sm:flex-row gap-4 lg:w-[65%]">
                     {/* Left: Profile Image */}
                     <Link
@@ -47,7 +50,7 @@ export default function TrainerList({
                           className="rounded-none"
                           src={
                             trainer?.profileImage
-                              ? `/profilePics/${trainer.profileImage}`
+                              ? `/profile-pictures/${trainer.profileImage}`
                               : "/avatar.svg"
                           }
                         />
@@ -119,12 +122,11 @@ export default function TrainerList({
                       </p>
                     </div>
                   </div>
-
-                  {/* YouTube embed - takes 100% width on mobile, ~35% on large screens */}
+                  {/* YouTube embed - takes 100% width on mobile, ~35% on large screens */}{" "}
                   <div className="w-full lg:w-[30%] min-w-[300px] mt-4 lg:mt-0">
                     <div className="relative rounded-lg overflow-hidden bg-black aspect-w-16 aspect-h-9">
                       <YouTubeEmbed
-                        videoid="37UhELFvPec"
+                        videoid={extractYouTubeId(trainer.videoUrl) || ""}
                         style="absolute top-0 left-0 w-full h-full"
                       />
                     </div>

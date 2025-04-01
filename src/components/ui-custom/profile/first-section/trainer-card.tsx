@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { getTrainerByClerkUserId } from "@/lib/data/data";
+import { extractYouTubeId, getTrainerByClerkUserId } from "@/lib/data/data";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { MapPin } from "lucide-react";
 import { YouTubeEmbed } from "@next/third-parties/google";
@@ -20,6 +20,7 @@ export default async function TrainerCard({
   if (userId) {
     clientId = await getTrainerByClerkUserId(userId);
   }
+  const url = extractYouTubeId(profile.videoUrl); // Extract the YouTube video ID from the profile's YouTube link
   // Create dynamic social links array based on profile data
   const socialLinks = [
     profile.twitterLink && {
@@ -44,6 +45,11 @@ export default async function TrainerCard({
     },
   ].filter(Boolean); // Filter out null/undefined values
 
+  // let video = extractYouTubeId(url);
+  // if (!url) {
+  //   url = url || "dQw4w9WgXcQ"; // Fallback to a default video ID if extraction fails
+  // }
+
   return (
     <div className="flex flex-col items-center mx-auto w-[95%] sm:w-[90%] md:w-4/5">
       <Card key={profile?.id} className="w-full">
@@ -54,7 +60,7 @@ export default async function TrainerCard({
               <AvatarImage
                 src={
                   profile.profileImage
-                    ? `/profilePics/${profile.profileImage}`
+                    ? `/profile-pictures/${profile.profileImage}`
                     : "/avatar.svg"
                 }
               />
@@ -113,7 +119,7 @@ export default async function TrainerCard({
             {/* Right: Video */}
             <div className="relative rounded-lg overflow-hidden bg-black w-full md:w-[355px] aspect-video">
               <div className="absolute inset-0">
-                <YouTubeEmbed videoid="37UhELFvPec" style="w-full h-full" />
+                <YouTubeEmbed videoid={url || ""} style="w-full h-full" />
               </div>
             </div>
           </div>

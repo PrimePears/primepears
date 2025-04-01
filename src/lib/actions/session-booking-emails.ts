@@ -5,8 +5,7 @@ import { formatDate } from "../data/data";
 import { prisma } from "@/lib/prisma";
 
 // Initialize Resend with your API key
-// const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
-const resend = new Resend("1234"); //TODO Remove this line and uncomment the above line in production
+const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
 interface EmailData {
   trainerId: string;

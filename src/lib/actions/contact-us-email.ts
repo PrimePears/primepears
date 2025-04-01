@@ -2,7 +2,7 @@
 
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY); //TODO: Crate resend api key for primepears
+const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
 type ContactFormData = {
   name: string;
@@ -18,10 +18,9 @@ export async function sendContactEmail(data: ContactFormData) {
   console.log(data);
 
   try {
-    // const { data: emailData, error } = await resend.emails.send({
     const { data: error } = await resend.emails.send({
       from: "Contact Form <onboarding@resend.dev>",
-      to: "liamlanders0@gmail.com",
+      to: "info@primepears.com",
       subject: `Contact Form:  ${subject}`,
       text: `
       Name: ${name}
@@ -42,14 +41,9 @@ export async function sendContactEmail(data: ContactFormData) {
             `,
     });
 
-    if (error) {
-      console.error("Error sending email:", error);
-      throw new Error("Failed to send email");
-    }
-
     return { success: true };
   } catch (error) {
-    console.error("Error in sendContactEmail:", error);
+    void error;
     throw new Error("Failed to send email");
   }
 }
