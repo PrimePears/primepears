@@ -32,7 +32,7 @@ export async function sendBookingConfirmationEmails(data: EmailData) {
     // Send email to trainer
     const trainerEmailResult = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "liamlanders0@gmail.com",
+      to: "info@primepears.com",
       subject: `New Session Booking: ${data.clientName} - ${formattedDate}`,
       html: getTrainerEmailTemplate(data, formattedDate),
     });
@@ -41,7 +41,7 @@ export async function sendBookingConfirmationEmails(data: EmailData) {
     // Send email to client
     const clientEmailResult = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "liamlanders0@gmail.com",
+      to: "info@primepears.com",
       subject: `Your Training Session with ${data.trainerName} - ${formattedDate}`,
       html: getClientEmailTemplate(data, formattedDate),
     });
