@@ -35,6 +35,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+
 import {
   X,
   PlusCircle,
@@ -42,20 +43,23 @@ import {
   Trash2,
   LinkIcon,
   HelpCircle,
+  InfoIcon,
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import AvailabilityCard from "./availability-card";
-import {
-  type Certification,
-  type DayAvailability,
-  type Profile,
-} from "@/lib/data/data";
+import type { Certification, DayAvailability, Profile } from "@/lib/data/data";
 import {
   CreateProfileFormSchema,
   type SocialMediaLink as SocialMediaLinkType,
 } from "@/app/schemas/profile";
 import { SocialMediaHelpDialog } from "./social-media-help-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // Define the availability slot interface
 interface AvailabilitySlot {
@@ -421,15 +425,6 @@ export default function CreateProfileForm({
         socialMediaLinks.find((link) => link.platform === "youtube")?.url ||
         null;
 
-      // Filter out the legacy platforms from socialMediaLinks to avoid duplication
-      // const otherSocialMediaLinks = socialMediaLinks.filter(
-      //   (link) =>
-      //     !["twitter", "instagram", "facebook", "youtube"].includes(
-      //       link.platform
-      //     )
-      // );
-
-      // Combine form values with availability data and certifications
       const completeData = {
         ...values,
         id: profile.id,
@@ -443,9 +438,6 @@ export default function CreateProfileForm({
               email: alternateEmail,
             }
           : undefined,
-        // Include both formats
-        // socialMediaLinks: showSocialMedia ? otherSocialMediaLinks : [],
-        // Add legacy fields
         twitterLink: twitterLink ? twitterLink : null,
         instagramLink: instagramLink ? instagramLink : null,
         facebookLink: facebookLink ? facebookLink : null,
@@ -469,7 +461,9 @@ export default function CreateProfileForm({
       }
 
       toast("Profile updated successfully!");
-      //TODO redirect to new page
+
+      // Add redirect after successful submission
+      window.location.href = "/dashboard"; // Change this to your desired redirect path
     } catch (error) {
       console.error("Form submission error", error);
       toast("Failed to update profile. Please try again.");
@@ -515,6 +509,11 @@ export default function CreateProfileForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
           className="space-y-8 max-w-3xl mx-auto"
         >
           {/* Trainer Type Section */}
@@ -609,7 +608,8 @@ export default function CreateProfileForm({
               }
             />
             <Label htmlFor="alternate-contact">
-              Add alternate contact information
+              Press here if you want to use a different name when interacting
+              with clients
             </Label>
           </div>
 
@@ -628,9 +628,24 @@ export default function CreateProfileForm({
                 />
               </div>
               <div>
-                <Label htmlFor="alternate-email" className="mb-2">
-                  Alternate Email
-                </Label>
+                <div className="flex gap-2">
+                  <Label htmlFor="alternate-email" className="mb-2">
+                    Alternate Email
+                  </Label>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <InfoIcon className="h-4 w-4 text-muted-foreground cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>
+                          This will become the email used to communicate with
+                          clients
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
                 <Input
                   id="alternate-email"
                   placeholder="Alternate Email"
@@ -732,175 +747,6 @@ export default function CreateProfileForm({
           />
 
           {/* Social Media Links Toggle */}
-
-          {/* <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <LinkIcon className="h-5 w-5" />
-                Social Media Links
-              </CardTitle>
-              <CardDescription>Add your social media profiles</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {socialMediaLinks.map((link) => (
-                <div
-                  key={link.id}
-                  className="grid grid-cols-12 gap-3 items-end"
-                >
-                  <div className="col-span-4">
-                    <Label htmlFor={`platform-${link.id}`}>Platform</Label>
-                    <Select
-                      value={link.platform}
-                      onValueChange={(value) =>
-                        updateSocialMediaLink(link.id, "platform", value)
-                      }
-                    >
-                      <SelectTrigger id={`platform-${link.id}`}>
-                        <SelectValue placeholder="Select platform" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="instagram">Instagram</SelectItem>
-                        <SelectItem value="facebook">Facebook</SelectItem>
-                        <SelectItem value="twitter">Twitter</SelectItem>
-                        <SelectItem value="youtube">YouTube</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="col-span-7">
-                    <Label htmlFor={`url-${link.id}`}>Username</Label>
-                    <div className="flex">
-                      <p className="mt-1 pr-1">@</p>
-                      <Input
-                        id={`url-${link.id}`}
-                        placeholder="https://..."
-                        value={link.url}
-                        onChange={(e) =>
-                          updateSocialMediaLink(link.id, "url", e.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-1">
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => removeSocialMediaLink(link.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-
-              {socialMediaLinks.length < 4 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={addSocialMediaLink}
-                  className="w-full"
-                >
-                  <PlusCircle className="h-4 w-4 mr-2" />
-                  Add Social Media Link
-                </Button>
-              )}
-
-              <div className="text-sm text-muted-foreground text-right">
-                {socialMediaLinks.length}/4 social media links added
-              </div>
-            </CardContent>
-          </Card> */}
-          {/* <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <LinkIcon className="h-5 w-5" />
-                Social Media Links
-              </CardTitle>
-              <CardDescription>Add your social media profiles</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {socialMediaLinks.map((link) => (
-                <div
-                  key={link.id}
-                  className="grid grid-cols-12 gap-3 items-end"
-                >
-                  <div className="col-span-4">
-                    <Label htmlFor={`platform-${link.id}`}>Platform</Label>
-                    <Select
-                      value={link.platform}
-                      onValueChange={(value) =>
-                        updateSocialMediaLink(link.id, "platform", value)
-                      }
-                    >
-                      <SelectTrigger id={`platform-${link.id}`}>
-                        <SelectValue placeholder="Select platform" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="instagram">Instagram</SelectItem>
-                        <SelectItem value="facebook">Facebook</SelectItem>
-                        <SelectItem value="twitter">Twitter</SelectItem>
-                        <SelectItem value="youtube">YouTube</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="col-span-6">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor={`url-${link.id}`}>Username</Label>
-                      {link.platform && (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-6 px-1 text-muted-foreground"
-                          onClick={() => openHelpDialog(link.platform!)}
-                        >
-                          <HelpCircle className="h-3.5 w-3.5 mr-1" />
-                          <span className="text-xs">Find username</span>
-                        </Button>
-                      )}
-                    </div>
-                    <div className="flex">
-                      <p className="mt-1 pr-1">@</p>
-                      <Input
-                        id={`url-${link.id}`}
-                        placeholder="username"
-                        value={link.url}
-                        onChange={(e) =>
-                          updateSocialMediaLink(link.id, "url", e.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-2">
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => removeSocialMediaLink(link.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-
-              {socialMediaLinks.length < 4 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={addSocialMediaLink}
-                  className="w-full"
-                >
-                  <PlusCircle className="h-4 w-4 mr-2" />
-                  Add Social Media Link
-                </Button>
-              )}
-
-              <div className="text-sm text-muted-foreground text-right">
-                {socialMediaLinks.length}/4 social media links added
-              </div>
-            </CardContent>
-          </Card> */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
