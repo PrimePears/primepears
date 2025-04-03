@@ -145,7 +145,6 @@ export default function Dashboard() {
     alternativeTimes: Array<{
       date: string;
       startTime: string;
-      endTime: string;
     }>
   ) => {
     if (!selectedBooking) return;
@@ -188,13 +187,52 @@ export default function Dashboard() {
     }
   };
 
+  const handleEditAndConfirm = async (
+    message: string,
+    newDate: string,
+    newStartTime: string
+  ) => {
+    if (!selectedBooking) return;
+
+    try {
+      const response = await fetch(
+        `/api/dashboard/${selectedBooking.id}/edit-and-confirm`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status: "CONFIRMED",
+            message,
+            date: newDate,
+            startTime: newStartTime,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update and confirm session");
+      }
+
+      toast("Session updated and confirmed successfully");
+      setStatusDialogOpen(false);
+      setSelectedBooking(null);
+      setTargetStatus("");
+      fetchBookings();
+    } catch (error) {
+      console.error("Error updating and confirming session:", error);
+      toast("Failed to update and confirm session. Please try again.");
+    }
+  };
+
   // Helper component for session cards
   const SessionCard = ({ booking }: { booking: Booking }) => {
     const getStatusOptions = (currentStatus: string) => {
       switch (currentStatus) {
         case "PENDING":
           return [
-            { label: "Confirm", value: "CONFIRMED" },
+            { label: "Edit & Confirm", value: "CONFIRMED" },
             { label: "Propose Alternate Times", value: "PROPOSE_ALTERNATES" },
             { label: "Cancel", value: "CANCELLED" },
           ];
@@ -476,6 +514,7 @@ export default function Dashboard() {
         booking={selectedBooking}
         status={targetStatus}
         onConfirm={handleDialogConfirm}
+        onConfirmWithEdit={handleEditAndConfirm}
       />
 
       <AlternateTimesDialog

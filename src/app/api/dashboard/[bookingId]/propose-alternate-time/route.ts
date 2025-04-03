@@ -5,10 +5,13 @@ import { prisma } from "@/lib/prisma";
 type AlternativeTime = {
   date: string;
   startTime: string;
-  endTime: string;
+  endTime?: string; // Make endTime optional since it's calculated
 };
 
-export async function POST(req: Request) {
+export async function POST(
+  req: Request,
+  { params }: { params: { bookingId: string } }
+) {
   try {
     const { userId } = await auth();
 
@@ -16,9 +19,7 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const url = new URL(req.url);
-    const pathParts = url.pathname.split("/");
-    const bookingId = pathParts[pathParts.indexOf("dashboard") + 1];
+    const bookingId = await params.bookingId; // Extract bookingId from route params
     const { message, alternativeTimes } = await req.json();
 
     // Validate input
@@ -56,9 +57,34 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    // Calculate end times based on session type if not provided
+    const timesWithEndTimes = alternativeTimes.map((time: AlternativeTime) => {
+      let endTime = time.endTime;
+
+      if (!endTime && time.startTime) {
+        // Calculate end time based on session type
+        const [hours, minutes] = time.startTime.split(":").map(Number);
+        const date = new Date();
+        date.setHours(hours, minutes, 0, 0);
+
+        if (booking.sessionType === "CONSULTATION") {
+          date.setMinutes(date.getMinutes() + 15);
+        } else {
+          date.setHours(date.getHours() + 1);
+        }
+
+        endTime = `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+      }
+
+      return {
+        ...time,
+        endTime,
+      };
+    });
+
     // Format the alternative times for the notes
-    const formattedTimes = alternativeTimes
-      .map((time: AlternativeTime) => {
+    const formattedTimes = timesWithEndTimes
+      .map((time: AlternativeTime & { endTime: string }) => {
         // Convert 24-hour format to 12-hour format for display
         const formatTime = (timeStr: string) => {
           const [hours, minutes] = timeStr.split(":").map(Number);
@@ -80,7 +106,6 @@ export async function POST(req: Request) {
       })
       .join("\n");
 
-   
     // Update the booking with the proposed alternative times in the notes
     const updatedBooking = await prisma.booking.update({
       where: {
