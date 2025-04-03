@@ -33,9 +33,9 @@ interface EmailDataNoAccount {
 type EmailTemplateData = EmailData | EmailDataNoAccount;
 
 // Type guard to check if the data is EmailData
-function isEmailData(data: EmailTemplateData): data is EmailData {
-  return "clientId" in data;
-}
+// function isEmailData(data: EmailTemplateData): data is EmailData {
+//   return "clientId" in data;
+// }
 
 export async function sendBookingConfirmationEmails(data: EmailData) {
   try {

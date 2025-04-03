@@ -95,6 +95,7 @@ export function AlternateTimesDialog({
         day: "numeric",
       });
     } catch (e) {
+      void e;
       return dateString;
     }
   };
@@ -193,6 +194,7 @@ export function AlternateTimesDialog({
 
       return `${endHours}:${String(endMinutes).padStart(2, "0")} ${endPeriod}`;
     } catch (e) {
+      void e;
       return "";
     }
   };
@@ -236,8 +238,6 @@ export function AlternateTimesDialog({
 
     return dates;
   };
-
-  const dateOptions = generateDateOptions();
 
   // Generate hour options (1-12)
   const hourOptions = Array.from({ length: 12 }, (_, i) => (i + 1).toString());

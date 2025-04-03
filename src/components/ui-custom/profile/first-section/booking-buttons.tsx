@@ -14,13 +14,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -34,7 +27,6 @@ import {
   sendBookingConfirmationEmailsNoAccount,
 } from "@/lib/actions/session-booking-emails";
 import { Input } from "@/components/ui/input";
-import { date } from "zod";
 import { TimePicker } from "@/components/ui-custom/time-picker/time-picker";
 
 // interface TimePickerProps {
@@ -612,7 +604,6 @@ export default function BookingButtons({
                             time: value,
                           }))
                         }
-                        minTime={minTime}
                       />
                     </div>
                     <div className="grid gap-2">
@@ -745,7 +736,6 @@ export default function BookingButtons({
                             time: value,
                           }))
                         }
-                        minTime={minTime}
                       />
                     </div>
                     <div className="grid gap-2">
