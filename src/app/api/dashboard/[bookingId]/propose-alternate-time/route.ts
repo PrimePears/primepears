@@ -8,10 +8,7 @@ type AlternativeTime = {
   endTime?: string; // Make endTime optional since it's calculated
 };
 
-export async function POST(
-  req: Request,
-  { params }: { params: { bookingId: string } }
-) {
+export async function POST(req: Request) {
   try {
     const { userId } = await auth();
 
@@ -19,7 +16,11 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const bookingId = await params.bookingId; // Extract bookingId from route params
+    const url = new URL(req.url);
+    const pathParts = url.pathname.split("/");
+    const bookingId = pathParts[pathParts.indexOf("dashboard") + 1];
+    //
+    // const bookingId = await params.bookingId; // Extract bookingId from route params
     const { message, alternativeTimes } = await req.json();
 
     // Validate input
