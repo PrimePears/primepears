@@ -218,26 +218,26 @@ export function AlternateTimesDialog({
   };
 
   // Generate next 14 days for date selection
-  const generateDateOptions = () => {
-    const dates = [];
-    const today = new Date();
+  // const generateDateOptions = () => {
+  //   const dates = [];
+  //   const today = new Date();
 
-    for (let i = 0; i < 14; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
+  //   for (let i = 0; i < 14; i++) {
+  //     const date = new Date(today);
+  //     date.setDate(today.getDate() + i);
 
-      const dateStr = date.toISOString().split("T")[0]; // YYYY-MM-DD
-      const displayDate = date.toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      });
+  //     const dateStr = date.toISOString().split("T")[0]; // YYYY-MM-DD
+  //     const displayDate = date.toLocaleDateString("en-US", {
+  //       weekday: "short",
+  //       month: "short",
+  //       day: "numeric",
+  //     });
 
-      dates.push({ value: dateStr, label: displayDate });
-    }
+  //     dates.push({ value: dateStr, label: displayDate });
+  //   }
 
-    return dates;
-  };
+  //   return dates;
+  // };
 
   // Generate hour options (1-12)
   const hourOptions = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
