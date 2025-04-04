@@ -8,46 +8,7 @@ import { getConfirmationEmailTemplate } from "@/lib/email/confirm-email-template
 // Initialize Resend
 const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
-// Helper function to parse time in "3:15 AM" format and add minutes
-function addMinutesToTime(timeString: string, minutesToAdd: number): string {
-  // Parse the time string
-  const [timePart, period] = timeString.split(" ");
-  const [hourStr, minuteStr] = timePart.split(":");
-
-  let hour = Number.parseInt(hourStr, 10);
-  const minute = Number.parseInt(minuteStr, 10);
-
-  // Convert to 24-hour format for calculation
-  if (period === "PM" && hour < 12) {
-    hour += 12;
-  } else if (period === "AM" && hour === 12) {
-    hour = 0;
-  }
-
-  // Create a date object to handle time arithmetic
-  const date = new Date();
-  date.setHours(hour, minute, 0, 0);
-
-  // Add the minutes
-  date.setMinutes(date.getMinutes() + minutesToAdd);
-
-  // Convert back to 12-hour format
-  let newHour = date.getHours();
-  const newMinute = date.getMinutes();
-  const newPeriod = newHour >= 12 ? "PM" : "AM";
-
-  // Convert hour back to 12-hour format
-  if (newHour > 12) {
-    newHour -= 12;
-  } else if (newHour === 0) {
-    newHour = 12;
-  }
-
-  // Format the time string
-  return `${newHour}:${newMinute.toString().padStart(2, "0")} ${newPeriod}`;
-}
-
-export async function PATCH(req: Request) {
+export async function POST(req: Request) {
   try {
     const { userId } = await auth();
     if (!userId) {
@@ -60,21 +21,7 @@ export async function PATCH(req: Request) {
     const bookingId = pathParts[pathParts.indexOf("dashboard") + 1];
 
     // Parse request body
-    const { status, message, date, startTime } = await req.json();
-
-    // Validate status
-    if (status !== BookingStatus.CONFIRMED) {
-      return new NextResponse("Invalid status for this endpoint", {
-        status: 400,
-      });
-    }
-
-    // Validate date and time
-    if (!date || !startTime) {
-      return new NextResponse("Date and start time are required", {
-        status: 400,
-      });
-    }
+    const { message } = await req.json();
 
     // Get the profile ID from the clerk user ID
     const profile = await prisma.profile.findUnique({
@@ -87,14 +34,14 @@ export async function PATCH(req: Request) {
       return new NextResponse("Profile not found", { status: 404 });
     }
 
-    // Get the booking
+    // Get the booking with related data
     const booking = await prisma.booking.findUnique({
       where: {
         id: bookingId,
       },
       include: {
         client: true,
-        trainer: true, // Include trainer details for the email
+        trainer: true,
       },
     });
 
@@ -107,43 +54,16 @@ export async function PATCH(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // Calculate new end time based on the session duration
-    let endTime = booking.endTime;
-
-    // If startTime has changed, we need to recalculate the endTime
-    if (startTime !== booking.startTime) {
-      // Calculate duration in minutes based on the session duration
-      let durationMinutes = 60; // Default to 60 minutes
-
-      switch (booking.duration) {
-        case "MINUTES_15":
-          durationMinutes = 15;
-          break;
-        case "MINUTES_60":
-          durationMinutes = 60;
-          break;
-        case "MINUTES_90":
-          durationMinutes = 90;
-          break;
-      }
-
-      // Calculate end time using our helper function
-      endTime = addMinutesToTime(startTime, durationMinutes);
-    }
-
-    // Update the booking with new date, times, and status
+    // Update the booking status to CONFIRMED and add trainer notes
     const updatedBooking = await prisma.booking.update({
       where: {
         id: bookingId,
       },
       data: {
-        date: new Date(date), // Convert string date to DateTime
-        startTime,
-        endTime,
         status: BookingStatus.CONFIRMED,
         trainerNotes: message
-          ? `${booking.trainerNotes || ""}\n\n${new Date().toISOString()}: Session rescheduled and confirmed. New date: ${date}, new time: ${startTime}-${endTime}. Message: ${message}`
-          : `${booking.trainerNotes || ""}\n\n${new Date().toISOString()}: Session rescheduled and confirmed. New date: ${date}, new time: ${startTime}-${endTime}.`,
+          ? `${booking.trainerNotes || ""}\n\n${new Date().toISOString()}: Session confirmed. Message: ${message}`
+          : `${booking.trainerNotes || ""}\n\n${new Date().toISOString()}: Session confirmed.`,
       },
     });
 
@@ -153,6 +73,11 @@ export async function PATCH(req: Request) {
         const trainerName = booking.trainer?.name || "Your trainer";
         const clientName = booking.client.name || "there";
         const sessionType = booking.sessionType.toLowerCase().replace("_", " ");
+        const { date, startTime, endTime } = booking;
+
+        // Format date for display if it's a Date object
+        const formattedDate =
+          date instanceof Date ? date.toISOString().split("T")[0] : date;
 
         // Prepare email data
         const emailData = {
@@ -161,7 +86,7 @@ export async function PATCH(req: Request) {
           trainerName: trainerName,
           clientName: clientName,
           sessionType: sessionType,
-          date: date,
+          date: formattedDate,
           startTime: startTime,
           endTime: endTime,
           message: message,
@@ -176,7 +101,7 @@ export async function PATCH(req: Request) {
 
             ${trainerName} has confirmed your upcoming session:
 
-            Date: ${date}
+            Date: ${formattedDate}
             Time: ${startTime} to ${endTime}
             Session Type: ${sessionType}
 
@@ -212,7 +137,7 @@ export async function PATCH(req: Request) {
 
     return NextResponse.json(updatedBooking);
   } catch (error) {
-    console.error("[BOOKING_EDIT_AND_CONFIRM]", error);
+    console.error("[BOOKING_CONFIRM]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

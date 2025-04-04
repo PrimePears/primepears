@@ -217,27 +217,6 @@ export function AlternateTimesDialog({
     onConfirm(message, validTimes);
   };
 
-  // Generate next 14 days for date selection
-  // const generateDateOptions = () => {
-  //   const dates = [];
-  //   const today = new Date();
-
-  //   for (let i = 0; i < 14; i++) {
-  //     const date = new Date(today);
-  //     date.setDate(today.getDate() + i);
-
-  //     const dateStr = date.toISOString().split("T")[0]; // YYYY-MM-DD
-  //     const displayDate = date.toLocaleDateString("en-US", {
-  //       weekday: "short",
-  //       month: "short",
-  //       day: "numeric",
-  //     });
-
-  //     dates.push({ value: dateStr, label: displayDate });
-  //   }
-
-  //   return dates;
-  // };
 
   // Generate hour options (1-12)
   const hourOptions = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
@@ -253,12 +232,15 @@ export function AlternateTimesDialog({
         <DialogHeader>
           <DialogTitle>Propose Alternative Times</DialogTitle>
           <DialogDescription>
-            Suggest alternative times for this session.
+            This will send a message to the client with the proposed alternative
+            times. Please ensure the times are correct before sending.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label>Original Session Details</Label>
+            <Label>
+              <h3>Original Session Details</h3>
+            </Label>
             <div className="rounded-md border p-2 bg-muted/50">
               <div>
                 <strong>Client:</strong> {booking.client.name}
@@ -276,7 +258,9 @@ export function AlternateTimesDialog({
           </div>
 
           <div className="grid gap-2">
-            <Label>Alternative Time Slots</Label>
+            <Label>
+              <h3>Alternative Time Slots</h3>
+            </Label>
             {alternativeTimes.map((time, index) => (
               <div key={index} className="flex gap-3 items-start mb-4">
                 <div className="grid gap-4 flex-1">

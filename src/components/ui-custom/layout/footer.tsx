@@ -1,7 +1,11 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
 
 export function Footer() {
+  const { user } = useUser();
+
   return (
     <footer className="bg-background border-t w-4/5 mx-auto py-8">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-6">
@@ -50,6 +54,12 @@ export function Footer() {
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             Contact
+          </Link>
+          <Link
+            href={`/trainer-profile/edit/${user?.id}`}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Become a Trainer
           </Link>
         </div>
       </div>

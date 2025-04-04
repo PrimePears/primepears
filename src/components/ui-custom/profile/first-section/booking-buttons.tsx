@@ -27,160 +27,166 @@ import {
   sendBookingConfirmationEmailsNoAccount,
 } from "@/lib/actions/session-booking-emails";
 import { Input } from "@/components/ui/input";
-import { TimePicker } from "@/components/ui-custom/time-picker/time-picker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-// interface TimePickerProps {
-//   value: string;
-//   onChange: (value: string) => void;
-//   minTime?: string; // Format: "HH:MM AM/PM"
-// }
+interface TimePickerProps {
+  value: string;
+  onChange: (value: string) => void;
+  minTime?: string; // Format: "HH:MM AM/PM"
+}
 
-// function TimePicker({ value, onChange, minTime }: TimePickerProps) {
-//   // Parse the current value
-//   const [hour, setHour] = useState<string>("");
-//   const [minute, setMinute] = useState<string>("");
-//   const [period, setPeriod] = useState<string>("");
-//   const [isInitialized, setIsInitialized] = useState(false);
+function TimePicker({ value, onChange, minTime }: TimePickerProps) {
+  // Parse the current value
+  const [hour, setHour] = useState<string>("");
+  const [minute, setMinute] = useState<string>("");
+  const [period, setPeriod] = useState<string>("");
+  const [isInitialized, setIsInitialized] = useState(false);
 
-//   // Generate available hours (1-12)
-//   const hours = Array.from({ length: 12 }, (_, i) => String(i + 1));
+  // Generate available hours (1-12)
+  const hours = Array.from({ length: 12 }, (_, i) => String(i + 1));
 
-//   // Generate available minutes (00, 15, 30, 45)
-//   const minutes = ["00", "15", "30", "45"];
+  // Generate available minutes (00, 15, 30, 45)
+  const minutes = ["00", "15", "30", "45"];
 
-//   // Parse minTime if provided
-//   const minHour = minTime ? Number.parseInt(minTime.split(":")[0]) : 0;
-//   const minMinute = minTime
-//     ? Number.parseInt(minTime.split(":")[1].split(" ")[0])
-//     : 0;
-//   const minPeriod = minTime ? minTime.split(" ")[1] : "AM";
+  // Parse minTime if provided
+  const minHour = minTime ? Number.parseInt(minTime.split(":")[0]) : 0;
+  const minMinute = minTime
+    ? Number.parseInt(minTime.split(":")[1].split(" ")[0])
+    : 0;
+  const minPeriod = minTime ? minTime.split(" ")[1] : "AM";
 
-//   // Initialize from value prop - only once
-//   useEffect(() => {
-//     if (value && !isInitialized) {
-//       const timeParts = value.split(" ");
-//       if (timeParts.length === 2) {
-//         const [hourMinute, ampm] = timeParts;
-//         const [h, m] = hourMinute.split(":");
-//         setHour(h);
-//         setMinute(m);
-//         setPeriod(ampm);
-//         setIsInitialized(true);
-//       } else if (!hour) {
-//         // Set default values if no value is provided
-//         setHour("9");
-//         setMinute("00");
-//         setPeriod("AM");
-//         setIsInitialized(true);
-//       }
-//     }
-//   }, [value, isInitialized, hour]);
+  // Initialize from value prop - only once
+  useEffect(() => {
+    if (value && !isInitialized) {
+      const timeParts = value.split(" ");
+      if (timeParts.length === 2) {
+        const [hourMinute, ampm] = timeParts;
+        const [h, m] = hourMinute.split(":");
+        setHour(h);
+        setMinute(m);
+        setPeriod(ampm);
+        setIsInitialized(true);
+      } else if (!hour) {
+        // Set default values if no value is provided
+        setHour("9");
+        setMinute("00");
+        setPeriod("AM");
+        setIsInitialized(true);
+      }
+    }
+  }, [value, isInitialized, hour]);
 
-//   // Handle individual field changes
-//   const handleHourChange = (newHour: string) => {
-//     setHour(newHour);
-//     if (minute && period) {
-//       onChange(`${newHour}:${minute} ${period}`);
-//     }
-//   };
+  // Handle individual field changes
+  const handleHourChange = (newHour: string) => {
+    setHour(newHour);
+    if (minute && period) {
+      onChange(`${newHour}:${minute} ${period}`);
+    }
+  };
 
-//   const handleMinuteChange = (newMinute: string) => {
-//     setMinute(newMinute);
-//     if (hour && period) {
-//       onChange(`${hour}:${newMinute} ${period}`);
-//     }
-//   };
+  const handleMinuteChange = (newMinute: string) => {
+    setMinute(newMinute);
+    if (hour && period) {
+      onChange(`${hour}:${newMinute} ${period}`);
+    }
+  };
 
-//   const handlePeriodChange = (newPeriod: string) => {
-//     setPeriod(newPeriod);
-//     if (hour && minute) {
-//       onChange(`${hour}:${minute} ${newPeriod}`);
-//     }
-//   };
+  const handlePeriodChange = (newPeriod: string) => {
+    setPeriod(newPeriod);
+    if (hour && minute) {
+      onChange(`${hour}:${minute} ${newPeriod}`);
+    }
+  };
 
-//   // Check if a specific time option should be disabled
-//   const isTimeDisabled = (h: string, m: string, p: string): boolean => {
-//     if (!minTime) return false;
+  // Check if a specific time option should be disabled
+  const isTimeDisabled = (h: string, m: string, p: string): boolean => {
+    if (!minTime) return false;
 
-//     // Convert to 24-hour for easier comparison
-//     const selectedHour = Number.parseInt(h);
-//     const selectedMinute = Number.parseInt(m);
-//     const selectedPeriod = p;
+    // Convert to 24-hour for easier comparison
+    const selectedHour = Number.parseInt(h);
+    const selectedMinute = Number.parseInt(m);
+    const selectedPeriod = p;
 
-//     // Convert to comparable values
-//     const selected24Hour =
-//       selectedPeriod === "PM" && selectedHour !== 12
-//         ? selectedHour + 12
-//         : selectedPeriod === "AM" && selectedHour === 12
-//           ? 0
-//           : selectedHour;
+    // Convert to comparable values
+    const selected24Hour =
+      selectedPeriod === "PM" && selectedHour !== 12
+        ? selectedHour + 12
+        : selectedPeriod === "AM" && selectedHour === 12
+          ? 0
+          : selectedHour;
 
-//     const min24Hour =
-//       minPeriod === "PM" && minHour !== 12
-//         ? minHour + 12
-//         : minPeriod === "AM" && minHour === 12
-//           ? 0
-//           : minHour;
+    const min24Hour =
+      minPeriod === "PM" && minHour !== 12
+        ? minHour + 12
+        : minPeriod === "AM" && minHour === 12
+          ? 0
+          : minHour;
 
-//     // Compare
-//     if (selected24Hour < min24Hour) return true;
-//     if (selected24Hour === min24Hour && selectedMinute < minMinute) return true;
+    // Compare
+    if (selected24Hour < min24Hour) return true;
+    if (selected24Hour === min24Hour && selectedMinute < minMinute) return true;
 
-//     return false;
-//   };
+    return false;
+  };
 
-//   return (
-//     <div className="flex space-x-2">
-//       <Select value={hour} onValueChange={handleHourChange}>
-//         <SelectTrigger className="w-[80px]">
-//           <SelectValue placeholder="Hour" />
-//         </SelectTrigger>
-//         <SelectContent>
-//           {hours.map((h) => (
-//             <SelectItem
-//               key={h}
-//               value={h}
-//               disabled={isTimeDisabled(h, minute, period)}
-//             >
-//               {h}
-//             </SelectItem>
-//           ))}
-//         </SelectContent>
-//       </Select>
+  return (
+    <div className="flex space-x-2">
+      <Select value={hour} onValueChange={handleHourChange}>
+        <SelectTrigger className="w-[80px]">
+          <SelectValue placeholder="Hour" />
+        </SelectTrigger>
+        <SelectContent>
+          {hours.map((h) => (
+            <SelectItem
+              key={h}
+              value={h}
+              disabled={isTimeDisabled(h, minute, period)}
+            >
+              {h}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-//       <Select value={minute} onValueChange={handleMinuteChange}>
-//         <SelectTrigger className="w-[80px]">
-//           <SelectValue placeholder="Min" />
-//         </SelectTrigger>
-//         <SelectContent>
-//           {minutes.map((m) => (
-//             <SelectItem
-//               key={m}
-//               value={m}
-//               disabled={isTimeDisabled(hour, m, period)}
-//             >
-//               {m}
-//             </SelectItem>
-//           ))}
-//         </SelectContent>
-//       </Select>
+      <Select value={minute} onValueChange={handleMinuteChange}>
+        <SelectTrigger className="w-[80px]">
+          <SelectValue placeholder="Min" />
+        </SelectTrigger>
+        <SelectContent>
+          {minutes.map((m) => (
+            <SelectItem
+              key={m}
+              value={m}
+              disabled={isTimeDisabled(hour, m, period)}
+            >
+              {m}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-//       <Select value={period} onValueChange={handlePeriodChange}>
-//         <SelectTrigger className="w-[80px]">
-//           <SelectValue placeholder="AM/PM" />
-//         </SelectTrigger>
-//         <SelectContent>
-//           <SelectItem value="AM" disabled={isTimeDisabled(hour, minute, "AM")}>
-//             AM
-//           </SelectItem>
-//           <SelectItem value="PM" disabled={isTimeDisabled(hour, minute, "PM")}>
-//             PM
-//           </SelectItem>
-//         </SelectContent>
-//       </Select>
-//     </div>
-//   );
-// }
+      <Select value={period} onValueChange={handlePeriodChange}>
+        <SelectTrigger className="w-[80px]">
+          <SelectValue placeholder="AM/PM" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="AM" disabled={isTimeDisabled(hour, minute, "AM")}>
+            AM
+          </SelectItem>
+          <SelectItem value="PM" disabled={isTimeDisabled(hour, minute, "PM")}>
+            PM
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
 
 interface BookingButtonsProps {
   trainerName: string;
@@ -196,7 +202,6 @@ export default function BookingButtons({
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [sessionOpen, setSessionOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  // const { toast } = useToast();
   const router = useRouter();
   const { isSignedIn } = useAuth();
   const { user } = useUser();
@@ -380,7 +385,7 @@ export default function BookingButtons({
         // For example, you might want to create a temporary user or store the booking differently
 
         toast(
-          "Your consultation request has been received. We'll contact you shortly to confirm."
+          "Your 15-minute consultation with has been scheduled. A meeting confirmation will be sent when the trainer approves."
         );
 
         try {
@@ -396,17 +401,9 @@ export default function BookingButtons({
           });
 
           if (emailResult.success) {
-            toast("Confirmation emails have been sent to you and the trainer.");
+            toast("Scheduling emails have been sent to you and the trainer.");
           }
-          // You might want to send a different type of email for guest users
-          // This is a placeholder for your implementation
-          // console.log("Guest booking:", {
-          //   name: guestInfo.name,
-          //   email: guestInfo.email,
-          //   date: consultationForm.date,
-          //   time: consultationForm.time,
-          //   notes: consultationForm.notes,
-          // });
+
         } catch (error) {
           console.log("Error processing guest consultation request");
           console.log(error);
@@ -510,7 +507,7 @@ export default function BookingButtons({
 
       if (result.success) {
         toast(
-          `Your ${sessionForm.sessionType === "60min" ? "60" : "90"}-minute session with ${trainerName} has been scheduled.`
+          `Your 60-minute session with ${trainerName} has been scheduled. A meeting confirmation will be sent when the trainer approves.`
         );
 
         try {
@@ -527,7 +524,7 @@ export default function BookingButtons({
           });
 
           if (emailResult.success) {
-            toast("Confirmation emails have been sent to you and the trainer.");
+            toast("Scheduling emails have been sent to you and the trainer.");
           }
         } catch (error) {
           console.log("Error sending confirmation emails");
@@ -622,7 +619,7 @@ export default function BookingButtons({
                   </div>
                 </div>
                 <div className="flex-1 p-6 bg-muted/20">
-                  <div className="mb-4">
+                  <div className="mb-4 flex flex-col items-center">
                     <Label htmlFor="consultation-date" className="mb-2 block">
                       Select a date
                     </Label>
@@ -703,28 +700,11 @@ export default function BookingButtons({
                   <div className="grid gap-4 py-2">
                     <div className="grid gap-2">
                       <Label>Session Type</Label>
-                      <RadioGroup
-                        defaultValue="60min"
-                        value={sessionForm.sessionType}
-                        onValueChange={(value) =>
-                          setSessionForm((prev) => ({
-                            ...prev,
-                            sessionType: value,
-                          }))
-                        }
-                        className="space-y-1"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="60min" id="60min" />
-                          <Label htmlFor="60min">60-Minute Session ($75)</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="90min" id="90min" />
-                          <Label htmlFor="90min">
-                            90-Minute Session ($110)
-                          </Label>
-                        </div>
-                      </RadioGroup>
+                      <div className="flex items-center space-x-2">
+                        <Label htmlFor="60min" className="font-semibold">
+                          60-Minute Session{" "}
+                        </Label>
+                      </div>
                     </div>
                     <div className="grid gap-2">
                       <Label htmlFor="session-time">Select a time</Label>
@@ -752,7 +732,7 @@ export default function BookingButtons({
                   </div>
                 </div>
                 <div className="flex-1 p-6 bg-muted/20">
-                  <div className="mb-4">
+                  <div className="mb-4 flex flex-col items-center">
                     <Label htmlFor="session-date" className="mb-2 block">
                       Select a date
                     </Label>

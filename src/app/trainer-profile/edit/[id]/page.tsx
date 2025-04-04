@@ -9,8 +9,10 @@ import { notFound } from "next/navigation";
 
 export default async function Page() {
   const user = await currentUser();
- 
+
   if (!user) {
+    console.log("no user ");
+
     return notFound();
   }
   const id = user?.id;

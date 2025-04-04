@@ -41,9 +41,8 @@ export function CertificatesCard({
             value="certificates"
             className="mt-0 focus-visible:outline-none focus-visible:ring-0"
           >
-            <CardHeader className="flex items-center">
-              All certificates have undergone thorough manual review and have
-              been officially approved.
+            <CardHeader className="flex items-center p-4 text-gray-600 ">
+              <h3>Verified Certifications</h3>
             </CardHeader>
             <CardContent className="flex-grow overflow-auto">
               {certificationProp.length > 0 ? (

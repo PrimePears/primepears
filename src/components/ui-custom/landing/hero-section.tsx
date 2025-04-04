@@ -66,7 +66,7 @@ export default function HeroSectionCard() {
             </CardFooter>
           </Card>
 
-          <SignedIn>
+          {/* <SignedIn>
             <div className="mt-6">
               <Card className="w-full bg-white shadow-lg rounded-lg text-center">
                 <CardHeader>
@@ -89,7 +89,7 @@ export default function HeroSectionCard() {
                 </CardFooter>
               </Card>
             </div>
-          </SignedIn>
+          </SignedIn> */}
         </div>
       </div>
     </div>

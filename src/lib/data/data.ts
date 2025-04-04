@@ -98,7 +98,8 @@ export async function getAllCertifications() {
   }
 }
 
-export function formatDate(dateString: string): string {
+//TODO Check all formatDate functions -- MUST USE THIS FUNCTION TO SHOW CORRECT DATE 
+export function formatDate(dateString: string): string { 
   const datePart = dateString.split("T")[0];
 
   // Parse the date parts

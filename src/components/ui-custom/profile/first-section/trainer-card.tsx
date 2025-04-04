@@ -114,7 +114,7 @@ export default async function TrainerCard({
             </div>
             <div className="px-4">
               <BookingButtons
-                trainerName={profile.name}
+                trainerName={displayName}
                 trainerId={profile.id}
                 clientId={clientId?.id}
               />

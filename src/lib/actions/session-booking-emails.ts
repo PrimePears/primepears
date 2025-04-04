@@ -32,11 +32,6 @@ interface EmailDataNoAccount {
 // Create a union type that can be either EmailData or EmailDataNoAccount
 type EmailTemplateData = EmailData | EmailDataNoAccount;
 
-// Type guard to check if the data is EmailData
-// function isEmailData(data: EmailTemplateData): data is EmailData {
-//   return "clientId" in data;
-// }
-
 export async function sendBookingConfirmationEmails(data: EmailData) {
   try {
     const formattedDate = formatDate(data.date);
@@ -99,6 +94,47 @@ export async function sendBookingConfirmationEmailsNoAccount(
       to: "info@primepears.com",
       subject: `New Inquiry Booking: ${data.clientName} - ${formattedDate}`,
       html: getTrainerNoAccountEmailTemplate(data, formattedDate),
+    });
+    console.log("Sent to trainer");
+
+    // Send email to client
+    const clientEmailResult = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: "info@primepears.com",
+      subject: `Your Training Session with ${data.trainerName} - ${formattedDate}`,
+      html: getClientEmailTemplate(data, formattedDate),
+    });
+    console.log("Sent to Client");
+    return {
+      success: true,
+      trainerEmailId: trainerEmailResult.data?.id,
+      clientEmailId: clientEmailResult.data?.id,
+    };
+  } catch (error) {
+    console.error("Error sending emails:", error);
+    return { success: false, error };
+  }
+}
+
+export async function sendAlternateTimeEmail(data: EmailData) {
+  try {
+    const formattedDate = formatDate(data.date);
+    const trainerEmail = await getTrainerEmail(data.trainerId);
+    const clientEmail = await getClientEmail(data.clientId);
+
+    if (!trainerEmail || !clientEmail) {
+      return { success: false, error: "Could not find email addresses" };
+    }
+
+    console.log("data.date: " + data);
+    console.log(formattedDate);
+    console.log("Got Email Data");
+    // Send email to trainer
+    const trainerEmailResult = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: "info@primepears.com",
+      subject: `New Session Booking: ${data.clientName} - ${formattedDate}`,
+      html: getTrainerEmailTemplate(data, formattedDate),
     });
     console.log("Sent to trainer");
 

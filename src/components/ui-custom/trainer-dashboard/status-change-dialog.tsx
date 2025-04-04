@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,34 +8,45 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { formatDate } from "@/lib/data/data"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { formatDate } from "@/lib/data/data";
 
 type Booking = {
-  id: string
+  id: string;
   client: {
-    name: string
-    email?: string
-  }
-  sessionType: string
-  date: string
-  startTime: string
-  endTime: string
-  status: string
-}
+    name: string;
+    email?: string;
+  };
+  sessionType: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  status: string;
+};
 
 interface StatusChangeDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  booking: Booking | null
-  status: string
-  onConfirm: (message: string) => void
-  onConfirmWithEdit?: (message: string, date: string, startTime: string) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  booking: Booking | null;
+  status: string;
+  onConfirm: (message: string) => void;
+  onConfirmWithEdit?: (
+    message: string,
+    date: string,
+    startTime: string
+  ) => void;
+  onCancel?: (message: string) => void; // Add this new prop
 }
 
 export function StatusChangeDialog({
@@ -45,179 +56,188 @@ export function StatusChangeDialog({
   status,
   onConfirm,
   onConfirmWithEdit,
+  onCancel,
 }: StatusChangeDialogProps) {
-  const [message, setMessage] = useState("")
-  const [editMode, setEditMode] = useState(false)
-  const [editDate, setEditDate] = useState("")
+  const [message, setMessage] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [editDate, setEditDate] = useState("");
 
-  const [originalDate, setOriginalDate] = useState("")
-  const [originalStartTime, setOriginalStartTime] = useState("")
-  const [originalEndTime, setOriginalEndTime] = useState("")
+  const [originalDate, setOriginalDate] = useState("");
+  const [originalStartTime, setOriginalStartTime] = useState("");
+  const [originalEndTime, setOriginalEndTime] = useState("");
 
   // Time state with separate hour, minute, and period
-  const [startHour, setStartHour] = useState("")
-  const [startMinute, setStartMinute] = useState("")
-  const [startPeriod, setStartPeriod] = useState("AM")
+  const [startHour, setStartHour] = useState("");
+  const [startMinute, setStartMinute] = useState("");
+  const [startPeriod, setStartPeriod] = useState("AM");
 
-  const [endHour, setEndHour] = useState("")
-  const [endMinute, setEndMinute] = useState("")
-  const [endPeriod, setEndPeriod] = useState("AM")
+  const [endHour, setEndHour] = useState("");
+  const [endMinute, setEndMinute] = useState("");
+  const [endPeriod, setEndPeriod] = useState("AM");
 
   // Parse time from "3:15 AM" format to separate components
   const parseTime = (timeString: string) => {
-    if (!timeString) return { hour: "12", minute: "00", period: "AM" }
+    if (!timeString) return { hour: "12", minute: "00", period: "AM" };
 
-    const [timePart, period] = timeString.split(" ")
-    const [hour, minute] = timePart.split(":")
+    const [timePart, period] = timeString.split(" ");
+    const [hour, minute] = timePart.split(":");
 
     return {
       hour: hour,
       minute: minute,
       period: period,
-    }
-  }
+    };
+  };
 
   // Format time components back to "3:15 AM" format
   const formatTime = (hour: string, minute: string, period: string) => {
-    return `${hour}:${minute} ${period}`
-  }
+    return `${hour}:${minute} ${period}`;
+  };
 
   useEffect(() => {
     if (open && booking) {
-      setMessage(getDefaultMessage())
-      setEditDate(booking.date)
+      setMessage(getDefaultMessage());
+      setEditDate(booking.date);
 
       // Store original values
-      setOriginalDate(booking.date)
-      setOriginalStartTime(booking.startTime)
-      setOriginalEndTime(booking.endTime)
+      setOriginalDate(booking.date);
+      setOriginalStartTime(booking.startTime);
+      setOriginalEndTime(booking.endTime);
 
       // Parse start time
-      const startTimeParts = parseTime(booking.startTime)
-      setStartHour(startTimeParts.hour)
-      setStartMinute(startTimeParts.minute)
-      setStartPeriod(startTimeParts.period)
+      const startTimeParts = parseTime(booking.startTime);
+      setStartHour(startTimeParts.hour);
+      setStartMinute(startTimeParts.minute);
+      setStartPeriod(startTimeParts.period);
 
       // Parse end time
-      const endTimeParts = parseTime(booking.endTime)
-      setEndHour(endTimeParts.hour)
-      setEndMinute(endTimeParts.minute)
-      setEndPeriod(endTimeParts.period)
+      const endTimeParts = parseTime(booking.endTime);
+      setEndHour(endTimeParts.hour);
+      setEndMinute(endTimeParts.minute);
+      setEndPeriod(endTimeParts.period);
 
-      setEditMode(false)
+      setEditMode(false);
     }
-  }, [open, booking])
+  }, [open, booking]);
 
   // Update end time when start time changes
   useEffect(() => {
     if (booking && booking.sessionType) {
       // Convert to 24-hour format for calculation
-      let hours = Number.parseInt(startHour)
-      const minutes = Number.parseInt(startMinute)
+      let hours = Number.parseInt(startHour);
+      const minutes = Number.parseInt(startMinute);
 
       // Convert to 24-hour format
-      if (startPeriod === "PM" && hours < 12) hours += 12
-      if (startPeriod === "AM" && hours === 12) hours = 0
+      if (startPeriod === "PM" && hours < 12) hours += 12;
+      if (startPeriod === "AM" && hours === 12) hours = 0;
 
-      const date = new Date()
-      date.setHours(hours, minutes, 0, 0)
+      const date = new Date();
+      date.setHours(hours, minutes, 0, 0);
 
       // Add duration based on session type
       if (booking.sessionType === "CONSULTATION") {
-        date.setMinutes(date.getMinutes() + 15)
+        date.setMinutes(date.getMinutes() + 15);
       } else {
-        date.setHours(date.getHours() + 1) // Default to 1 hour for other session types
+        date.setHours(date.getHours() + 1); // Default to 1 hour for other session types
       }
 
       // Convert back to 12-hour format
-      let endHours = date.getHours()
-      const endMinutes = date.getMinutes()
-      const endPeriod = endHours >= 12 ? "PM" : "AM"
+      let endHours = date.getHours();
+      const endMinutes = date.getMinutes();
+      const endPeriod = endHours >= 12 ? "PM" : "AM";
 
-      if (endHours > 12) endHours -= 12
-      if (endHours === 0) endHours = 12
+      if (endHours > 12) endHours -= 12;
+      if (endHours === 0) endHours = 12;
 
-      setEndHour(endHours.toString())
-      setEndMinute(endMinutes.toString().padStart(2, "0"))
-      setEndPeriod(endPeriod)
+      setEndHour(endHours.toString());
+      setEndMinute(endMinutes.toString().padStart(2, "0"));
+      setEndPeriod(endPeriod);
     }
-  }, [startHour, startMinute, startPeriod, booking])
+  }, [startHour, startMinute, startPeriod, booking]);
 
   const getDefaultMessage = () => {
-    if (!booking) return ""
+    if (!booking) return "";
 
-    const sessionDate = formatDate(booking.date)
-    const sessionTime = `${booking.startTime} - ${booking.endTime}`
+    const sessionDate = formatDate(booking.date);
+    const sessionTime = `${booking.startTime} - ${booking.endTime}`;
 
     if (status === "CONFIRMED") {
-      return `Hi ${booking.client.name},\n\nI'm confirming our session on ${sessionDate} at ${sessionTime}. Looking forward to seeing you!\n\nPlease let me know if you have any questions before we meet.`
+      return `Hi ${booking.client.name},\n\nI'm confirming our session on ${sessionDate} at ${sessionTime}. Looking forward to seeing you!\n\nPlease let me know if you have any questions before we meet.`;
     } else if (status === "CANCELLED") {
-      return `Hi ${booking.client.name},\n\nI need to cancel our session scheduled for ${sessionDate} at ${sessionTime}. I apologize for any inconvenience this may cause.\n\nPlease let me know if you'd like to reschedule for another time.`
+      return `Hi ${booking.client.name},\n\nI am not able to schedule our ${sessionDate} at ${sessionTime}. I apologize for any inconvenience this may cause.\n\nPlease let me know if you'd like to reschedule for another time.`;
     }
-    return ""
-  }
+    return "";
+  };
 
   const handleOpenChange = (open: boolean) => {
     if (open && booking) {
-      setMessage(getDefaultMessage())
-      setEditDate(booking.date)
+      setMessage(getDefaultMessage());
+      setEditDate(booking.date);
 
       // Parse start time
-      const startTimeParts = parseTime(booking.startTime)
-      setStartHour(startTimeParts.hour)
-      setStartMinute(startTimeParts.minute)
-      setStartPeriod(startTimeParts.period)
+      const startTimeParts = parseTime(booking.startTime);
+      setStartHour(startTimeParts.hour);
+      setStartMinute(startTimeParts.minute);
+      setStartPeriod(startTimeParts.period);
 
       // Parse end time
-      const endTimeParts = parseTime(booking.endTime)
-      setEndHour(endTimeParts.hour)
-      setEndMinute(endTimeParts.minute)
-      setEndPeriod(endTimeParts.period)
+      const endTimeParts = parseTime(booking.endTime);
+      setEndHour(endTimeParts.hour);
+      setEndMinute(endTimeParts.minute);
+      setEndPeriod(endTimeParts.period);
 
-      setEditMode(false)
+      setEditMode(false);
     }
-    onOpenChange(open)
-  }
+    onOpenChange(open);
+  };
 
   const handleConfirm = () => {
     if (status === "CONFIRMED" && editMode && onConfirmWithEdit) {
-      const formattedStartTime = formatTime(startHour, startMinute, startPeriod)
-      onConfirmWithEdit(message, editDate, formattedStartTime)
+      const formattedStartTime = formatTime(
+        startHour,
+        startMinute,
+        startPeriod
+      );
+      onConfirmWithEdit(message, editDate, formattedStartTime);
+    } else if (status === "CANCELLED" && onCancel) {
+      onCancel(message);
     } else {
-      onConfirm(message)
+      onConfirm(message);
     }
-  }
+  };
 
   const toggleEditMode = () => {
-    setEditMode(!editMode)
-  }
+    setEditMode(!editMode);
+  };
 
   const getDialogTitle = () => {
-    if (status === "CONFIRMED") return editMode ? "Edit & Confirm Session" : "Confirm Session"
-    if (status === "CANCELLED") return "Cancel Session"
-    return "Update Session Status"
-  }
+    if (status === "CONFIRMED")
+      return editMode ? "Edit & Confirm Session" : "Confirm Session";
+    if (status === "CANCELLED") return "Cancel Session";
+    return "Update Session Status";
+  };
 
   const getDialogDescription = () => {
     if (status === "CONFIRMED") {
       return editMode
         ? "Edit the session details and send a confirmation message to your client."
-        : "Send a confirmation message to your client."
+        : "Send a confirmation message to your client.";
     }
-    if (status === "CANCELLED") return "Let your client know why you're cancelling this session."
-    return "Update the status of this session."
-  }
+    if (status === "CANCELLED")
+      return "Let your client know why you're cancelling this session.";
+    return "Update the status of this session.";
+  };
 
   // Generate hour options (1-12)
-  const hourOptions = Array.from({ length: 12 }, (_, i) => (i + 1).toString())
+  const hourOptions = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
 
   // Generate minute options (00-59)
-  const minuteOptions = ["0", "15", "30", "45"]
+  const minuteOptions = ["0", "15", "30", "45"];
   // Array.from({ length: 60 }, (_, i) =>
   //   i.toString().padStart(2, "0")
   // );
 
-  if (!booking) return null
+  if (!booking) return null;
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -229,14 +249,17 @@ export function StatusChangeDialog({
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="client">Client</Label>
-            <div className="rounded-md border p-2 bg-muted/50">{booking.client.name}</div>
+            <div className="rounded-md border p-2 bg-muted/50">
+              {booking.client.name}
+            </div>
           </div>
 
           {editMode && (
             <div className="p-3 border border-dashed rounded-md bg-muted/30">
               <h4 className="text-sm font-medium mb-2">Original Date & Time</h4>
               <div className="text-sm text-muted-foreground">
-                {formatDate(originalDate)} • {originalStartTime} - {originalEndTime}
+                {formatDate(originalDate)} • {originalStartTime} -{" "}
+                {originalEndTime}
               </div>
             </div>
           )}
@@ -246,10 +269,16 @@ export function StatusChangeDialog({
               <div className="grid gap-2">
                 <Label htmlFor="session">Session Details</Label>
                 <div className="rounded-md border p-2 bg-muted/50">
-                  {formatDate(booking.date)} • {booking.startTime} - {booking.endTime}
+                  {formatDate(booking.date)} • {booking.startTime} -{" "}
+                  {booking.endTime}
                 </div>
               </div>
-              <Button variant="outline" type="button" onClick={toggleEditMode} className="w-full">
+              <Button
+                variant="outline"
+                type="button"
+                onClick={toggleEditMode}
+                className="w-full"
+              >
                 Edit Date/Time
               </Button>
             </>
@@ -290,7 +319,10 @@ export function StatusChangeDialog({
                     </SelectTrigger>
                     <SelectContent>
                       {minuteOptions.map((minute) => (
-                        <SelectItem key={`start-minute-${minute}`} value={minute}>
+                        <SelectItem
+                          key={`start-minute-${minute}`}
+                          value={minute}
+                        >
                           {minute}
                         </SelectItem>
                       ))}
@@ -311,13 +343,21 @@ export function StatusChangeDialog({
 
               <div className="grid gap-2">
                 <Label>End Time (Preview)</Label>
-                <div className="rounded-md border p-2 bg-muted/50">{formatTime(endHour, endMinute, endPeriod)}</div>
+                <div className="rounded-md border p-2 bg-muted/50">
+                  {formatTime(endHour, endMinute, endPeriod)}
+                </div>
                 <p className="text-xs text-muted-foreground">
-                  End time will be calculated automatically based on session duration
+                  End time will be calculated automatically based on session
+                  duration
                 </p>
               </div>
 
-              <Button variant="outline" type="button" onClick={toggleEditMode} className="w-full">
+              <Button
+                variant="outline"
+                type="button"
+                onClick={toggleEditMode}
+                className="w-full"
+              >
                 Cancel Edit
               </Button>
             </>
@@ -325,7 +365,8 @@ export function StatusChangeDialog({
             <div className="grid gap-2">
               <Label htmlFor="session">Session Details</Label>
               <div className="rounded-md border p-2 bg-muted/50">
-                {formatDate(booking.date)} • {booking.startTime} - {booking.endTime}
+                {formatDate(booking.date)} • {booking.startTime} -{" "}
+                {booking.endTime}
               </div>
             </div>
           )}
@@ -357,6 +398,5 @@ export function StatusChangeDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
-
