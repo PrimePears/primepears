@@ -16,9 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SignedIn, useUser } from "@clerk/nextjs";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/nextjs";
 
 export default function HeroSectionCard() {
   const router = useRouter();
