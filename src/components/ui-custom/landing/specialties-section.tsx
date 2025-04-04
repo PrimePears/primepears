@@ -13,17 +13,21 @@ export default function Specialties_Card() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 lg:gap-8">
-            <Link href="/trainers?specialty=strength" className="w-full">
+            {/* TODO : Fix link /trainers?specialty=strength */}
+            <Link href="/" className="w-full">
               <Button className="w-full px-6 py-3 text-lg font-semibold rounded-lg shadow-md text-white bg-custom-button-green hover:bg-custom-button-hover-green transition">
                 Strength Trainers
               </Button>
             </Link>
-            <Link href="/trainers?specialty=yoga" className="w-full">
+            {/* TODO : Fix link /trainers?specialty=yoga */}
+            <Link href="/" className="w-full">
               <Button className="w-full px-6 py-3 text-lg font-semibold rounded-lg shadow-md text-white bg-custom-button-green hover:bg-custom-button-hover-green transition">
                 Yoga Trainers
               </Button>
             </Link>
-            <Link href="/trainers?specialty=cardio" className="w-full">
+            {/* TODO : Fix link /trainers?specialty=cardio */}
+
+            <Link href="/" className="w-full">
               <Button className="w-full px-6 py-3 text-lg font-semibold rounded-lg shadow-md text-white bg-custom-button-green hover:bg-custom-button-hover-green transition">
                 Cardio Trainers
               </Button>

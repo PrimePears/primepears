@@ -34,9 +34,11 @@ interface ProfileProps {
 
 function DashboardButton() {
   const { user } = useUser();
-
+  {
+    /* TODO : Fix link href={`/trainer-profile/dashboard/${user?.id}`} */
+  }
   return (
-    <Link href={`/trainer-profile/dashboard/${user?.id}`}>
+    <Link href={`/`}>
       <Button
         variant="default"
         className="flex items-center gap-2 bg-custom-button-green hover:bg-custom-button-hover-green"
@@ -100,7 +102,8 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
                 Home
               </Button>
             </Link>
-            <Link href="/trainers">
+            {/* TODO : Fix link /trainers */}
+            <Link href="/">
               <Button
                 variant="default"
                 className="flex items-center gap-2 bg-custom-button-green hover:bg-custom-button-hover-green"
@@ -109,7 +112,8 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
                 Trainers
               </Button>
             </Link>
-            <Link href="/about">
+            {/* TODO : Fix link /about */}
+            <Link href="/">
               <Button
                 variant="default"
                 className="flex items-center gap-2 bg-custom-button-green hover:bg-custom-button-hover-green"
@@ -118,7 +122,8 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
                 About
               </Button>
             </Link>
-            <Link href="/faq">
+            {/* TODO : Fix link /faq */}
+            <Link href="/">
               <Button
                 variant="default"
                 className="flex items-center gap-2 bg-custom-button-green hover:bg-custom-button-hover-green"
@@ -134,7 +139,6 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
             <SignedIn>
               <div className="flex items-center space-x-2">
                 {user?.imageUrl ? (
-                  // <Link href={`/trainer-profile/edit/${user.id}`}>
                   <Image
                     src={user.imageUrl || "/defaultAvatar.jpg"}
                     alt="Profile Picture"
@@ -201,7 +205,8 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
                 Home
               </Button>
             </Link>
-            <Link href="/trainers" onClick={toggleMobileMenu}>
+            {/* TODO : Fix link /trainers */}
+            <Link href="/" onClick={toggleMobileMenu}>
               <Button
                 variant="default"
                 className="w-full justify-start bg-custom-button-green hover:bg-custom-button-hover-green"
@@ -210,7 +215,8 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
                 Trainers
               </Button>
             </Link>
-            <Link href="/about" onClick={toggleMobileMenu}>
+            {/* TODO : Fix link /about */}
+            <Link href="/" onClick={toggleMobileMenu}>
               <Button
                 variant="default"
                 className="w-full justify-start bg-custom-button-green hover:bg-custom-button-hover-green"
@@ -219,7 +225,8 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
                 About
               </Button>
             </Link>
-            <Link href="/faq" onClick={toggleMobileMenu}>
+            {/* TODO : Fix link /faq */}
+            <Link href="/" onClick={toggleMobileMenu}>
               <Button
                 variant="default"
                 className="w-full justify-start bg-custom-button-green hover:bg-custom-button-hover-green"
@@ -248,20 +255,18 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
                     </span>
                   </div>
 
-                  <Link
+                  {/* <Link
                     href={`/trainer-profile/edit/${user?.id}`}
                     onClick={toggleMobileMenu}
                   >
                     <Button variant="outline" className="w-full justify-start">
                       View Profile
                     </Button>
-                  </Link>
+                  </Link> */}
 
+                  {/* TODO : Fix link href={`/trainer-profile/dashboard/${user?.id}`} */}
                   {profile?.isTrainer && (
-                    <Link
-                      href={`/trainer-profile/dashboard/${user?.id}`}
-                      onClick={toggleMobileMenu}
-                    >
+                    <Link href={`/`} onClick={toggleMobileMenu}>
                       <Button
                         variant="default"
                         className="w-full justify-start bg-custom-button-green hover:bg-custom-button-hover-green"

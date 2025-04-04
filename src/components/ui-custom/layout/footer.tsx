@@ -31,32 +31,37 @@ export function Footer() {
           >
             Home
           </Link>
+          {/* TODO : Fix link /trainers */}
           <Link
-            href="/trainers"
+            href="/"
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             Trainers
           </Link>
+          {/* TODO : Fix link /about */}
           <Link
-            href="/about"
+            href="/"
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             About
           </Link>
+          {/* TODO : Fix link /faq */}
           <Link
-            href="/faq"
+            href="/"
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             FAQ
           </Link>
+          {/* TODO : Fix link /contact-us */}
           <Link
-            href="/contact-us"
+            href="/"
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             Contact
           </Link>
+          {/* TODO : Fix link href={`/trainer-profile/edit/${user?.id}`} */}
           <Link
-            href={`/trainer-profile/edit/${user?.id}`}
+            href={`/`}
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             Become a Trainer

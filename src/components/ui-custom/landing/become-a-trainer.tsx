@@ -27,7 +27,9 @@ export default function BecomeATrainer() {
         </CardHeader>
         <CardContent>
           <div>
-            <Link href={`/trainer-profile/edit/${user?.id}`} className="w-full">
+            {/* TODO : Fix link href={`/trainer-profile/edit/${user?.id}`} */}
+
+            <Link href={`/`} className="w-full">
               <Button className="w-full px-6 py-3 text-lg font-semibold rounded-lg shadow-md text-white bg-custom-button-green hover:bg-custom-button-hover-green transition">
                 Become a Trainer
               </Button>

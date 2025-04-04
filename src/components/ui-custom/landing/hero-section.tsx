@@ -18,10 +18,11 @@ import {
 } from "@/components/ui/select";
 
 export default function HeroSectionCard() {
-  const router = useRouter();
+  //const router = useRouter();
 
   const handleSpecialtyChange = (value: string) => {
-    router.push(`/trainers?specialty=${value}`);
+    //TODO : Fix the link to the trainers page and ucomment useRouter() above
+    //router.push(`/trainers?specialty=${value}`);
   };
 
   return (
