@@ -16,11 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useUser } from "@clerk/nextjs";
 
 export default function HeroSectionCard() {
   const router = useRouter();
-  const { user } = useUser();
 
   const handleSpecialtyChange = (value: string) => {
     router.push(`/trainers?specialty=${value}`);
@@ -63,31 +61,6 @@ export default function HeroSectionCard() {
               </Select>
             </CardFooter>
           </Card>
-
-          {/* <SignedIn>
-            <div className="mt-6">
-              <Card className="w-full bg-white shadow-lg rounded-lg text-center">
-                <CardHeader>
-                  <CardTitle className="text-2xl sm:text-3xl font-semibold ">
-                    Become a Trainer
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700">Apply to join our platform!</p>
-                </CardContent>
-                <CardFooter className="w-full flex justify-center">
-                  <Link
-                    href={`/trainer-profile/edit/${user?.id}`}
-                    className="w-full max-w-xs"
-                  >
-                    <Button className="w-full px-6 py-3 text-lg font-semibold rounded-lg shadow-md text-white bg-custom-button-green hover:bg-custom-button-hover-green transition">
-                      Apply Now
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-            </div>
-          </SignedIn> */}
         </div>
       </div>
     </div>
