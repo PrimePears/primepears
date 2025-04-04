@@ -33,7 +33,7 @@ interface ProfileProps {
 }
 
 function DashboardButton() {
-  const { user } = useUser();
+  // const { user } = useUser();
   {
     /* TODO : Fix link href={`/trainer-profile/dashboard/${user?.id}`} */
   }
