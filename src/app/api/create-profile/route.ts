@@ -35,7 +35,6 @@ export async function POST() {
       return NextResponse.json({ message: "Profile already exists." });
     }
 
-    console.log("Attempting to create profile for user:", clerkUser.id);
     await prisma.profile.create({
       data: {
         clerkUserId: clerkUser.id,
@@ -50,7 +49,6 @@ export async function POST() {
         isTrainer: false,
       },
     });
-    console.log("Profile created successfully for user:", clerkUser.id);
 
     return NextResponse.json(
       { message: "Profile create successfully" },

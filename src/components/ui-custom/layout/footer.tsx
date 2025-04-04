@@ -52,9 +52,9 @@ export function Footer() {
           >
             FAQ
           </Link>
-          {/* TODO : Fix link /contact-us */}
+
           <Link
-            href="/"
+            href="/contact-us"
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             Contact

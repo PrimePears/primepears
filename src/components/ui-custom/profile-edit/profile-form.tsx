@@ -443,7 +443,7 @@ export default function CreateProfileForm({
         facebookLink: facebookLink ? facebookLink : null,
         youtubeLink: youtubeLink ? youtubeLink : null,
       };
-      console.log("completeData", completeData);
+
       // Send data to the API
       const response = await fetch("/api/trainer-profile/edit", {
         method: "POST",
@@ -454,7 +454,6 @@ export default function CreateProfileForm({
       });
 
       const result = await response.json();
-      console.log(result);
 
       if (!response.ok) {
         throw new Error(result.error || "Failed to update profile");

@@ -14,9 +14,6 @@ type ContactFormData = {
 export async function sendContactEmail(data: ContactFormData) {
   const { name, email, subject, message } = data;
 
-  console.log("inside sendContactEmail");
-  console.log(data);
-
   try {
     const {} = await resend.emails.send({
       from: "Contact Form <onboarding@resend.dev>",
