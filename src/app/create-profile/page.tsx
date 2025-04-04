@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { CheckCircle } from "lucide-react";
 
 type ApiResponse = {
@@ -31,7 +31,6 @@ export default function CreateProfile() {
   const { mutate, isPending, isSuccess } = useMutation<ApiResponse, Error>({
     mutationFn: createProfileRequest,
     onSuccess: () => {
-      console.log("Success - Create Profile");
       setIsRedirecting(true);
 
       // Redirect to homepage after a delay (3 seconds)
@@ -39,8 +38,8 @@ export default function CreateProfile() {
       router.push("/");
     },
     onError: (error) => {
-      console.error("Error - Create Profile", error);
-      console.log("Error - Create Profile");
+      void error;
+      return notFound();
     },
   });
 

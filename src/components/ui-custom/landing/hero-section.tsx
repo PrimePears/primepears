@@ -1,28 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import { useRouter } from "next/navigation";
+// import {
+//   Card,
+//   CardContent,
+//   CardFooter,
+//   CardHeader,
+//   CardTitle,
+// } from "@/components/ui/card";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 
 export default function HeroSectionCard() {
-  const router = useRouter();
+  //const router = useRouter();
 
-  const handleSpecialtyChange = (value: string) => {
-    router.push(`/trainers?specialty=${value}`);
-  };
+  // const handleSpecialtyChange = (value: string) => {
+  //TODO : Fix the link to the trainers page and ucomment useRouter() above
+  //router.push(`/trainers?specialty=${value}`);
+  // };
 
   return (
     <div className="relative w-screen h-screen overflow-hidden p-4">
@@ -34,7 +35,7 @@ export default function HeroSectionCard() {
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-      <div className="relative z-20 container mx-auto px-4 h-full flex justify-center items-center">
+      {/* <div className="relative z-20 container mx-auto px-4 h-full flex justify-center items-center">
         <div className="w-4/5 max-w-lg mx-auto">
           <Card className="w-full bg-white shadow-lg rounded-lg text-center">
             <CardHeader>
@@ -62,7 +63,7 @@ export default function HeroSectionCard() {
             </CardFooter>
           </Card>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

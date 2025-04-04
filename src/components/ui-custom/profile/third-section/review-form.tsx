@@ -44,7 +44,7 @@ export default function ReviewForm({ trainerId, clientId }: ReviewFormProps) {
       setRating(0);
       setComment("");
     } catch (error) {
-      console.log(error);
+      void error;
       toast("You may only submit 1 review per session.");
     } finally {
       setIsSubmitting(false);

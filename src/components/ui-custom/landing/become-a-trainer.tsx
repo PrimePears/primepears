@@ -7,11 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function BecomeATrainer() {
-  const { user } = useUser();
+  // const { user } = useUser();
   return (
     <div className="w-full px-4 py-4 sm:py-6">
       <Card className="w-4/5 mx-auto">
@@ -27,7 +27,9 @@ export default function BecomeATrainer() {
         </CardHeader>
         <CardContent>
           <div>
-            <Link href={`/trainer-profile/edit/${user?.id}`} className="w-full">
+            {/* TODO : Fix link href={`/trainer-profile/edit/${user?.id}`} */}
+
+            <Link href={`/`} className="w-full">
               <Button className="w-full px-6 py-3 text-lg font-semibold rounded-lg shadow-md text-white bg-custom-button-green hover:bg-custom-button-hover-green transition">
                 Become a Trainer
               </Button>

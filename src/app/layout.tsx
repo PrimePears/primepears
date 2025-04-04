@@ -30,6 +30,13 @@ export default async function Layout({
           <body>
             <ReactQueryClientProvider>
               <NavBar profile={null} />
+              <div className="flex flex-col items-center justify-center">
+                {/* TODO : Remove <h3> elements  */}
+                <h3>
+                  Most Buttons and features are disabled until full launch.
+                </h3>
+                <h3>Please create an account. </h3>
+              </div>
               <main>{children}</main>
               {/* <SpeedInsights /> */}
               {/* <Analytics /> */}
@@ -50,6 +57,13 @@ export default async function Layout({
           <body>
             <ReactQueryClientProvider>
               <NavBar profile={profile} />
+              <div className="flex flex-col items-center justify-center">
+                {/* TODO : Remove <h3> elements  */}
+                <h3>
+                  Most Buttons and features are disabled until full launch.
+                </h3>
+                <h3>Thank you for creating an account. </h3>
+              </div>
               <main>{children}</main>
               <Footer></Footer>
             </ReactQueryClientProvider>
