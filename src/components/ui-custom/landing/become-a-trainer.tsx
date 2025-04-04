@@ -7,11 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function BecomeATrainer() {
-  const { user } = useUser();
+  // const { user } = useUser();
   return (
     <div className="w-full px-4 py-4 sm:py-6">
       <Card className="w-4/5 mx-auto">

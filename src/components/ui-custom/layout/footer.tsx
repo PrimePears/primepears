@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 
 export function Footer() {
-  const { user } = useUser();
+  // const { user } = useUser();
 
   return (
     <footer className="bg-background border-t w-4/5 mx-auto py-8">
