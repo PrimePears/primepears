@@ -3,7 +3,6 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { Resend } from "resend";
 import { formatDate } from "@/lib/data/data";
-import { min } from "date-fns";
 
 // Initialize Resend
 const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
@@ -28,7 +27,6 @@ interface AlternativeTimesEmailData {
 function getAlternativeTimesEmailTemplate(
   data: AlternativeTimesEmailData
 ): string {
-
   const timesHtml = data.alternativeTimes
     .map((time) => {
       const formattedDate = formatDate(time.date);
@@ -213,7 +211,6 @@ export async function POST(req: Request) {
 
     const formattedTimes = timesWithEndTimes
       .map((time: AlternativeTime & { endTime: string }) => {
-
         // Format the date
         const date = new Date(time.date);
         const formattedDate = date.toLocaleDateString("en-US", {
@@ -259,7 +256,7 @@ export async function POST(req: Request) {
         const htmlContent = getAlternativeTimesEmailTemplate(emailData);
 
         // Send the email using Resend
-        const { data, error } = await resend.emails.send({
+        const { error } = await resend.emails.send({
           from: `onboarding@resend.dev`,
           to: "info@primepears.com", //TODO Change this email variable
           subject: `Alternative Times for Your ${sessionType.charAt(0).toUpperCase() + sessionType.slice(1)} Session`,
