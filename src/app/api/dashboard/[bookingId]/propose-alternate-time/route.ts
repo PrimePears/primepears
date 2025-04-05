@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { Resend } from "resend";
 import { formatDate } from "@/lib/data/data";
+import { min } from "date-fns";
 
 // Initialize Resend
 const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
@@ -27,20 +28,16 @@ interface AlternativeTimesEmailData {
 function getAlternativeTimesEmailTemplate(
   data: AlternativeTimesEmailData
 ): string {
-  const formatTime = (timeStr: string) => {
-    const [hours, minutes] = timeStr.split(":").map(Number);
-    const period = hours >= 12 ? "PM" : "AM";
-    const hour12 = hours % 12 || 12;
-    return `${hour12}:${minutes.toString().padStart(2, "0")} ${period}`;
-  };
 
   const timesHtml = data.alternativeTimes
     .map((time) => {
       const formattedDate = formatDate(time.date);
+      console.log(time.startTime, " +  ", time.endTime);
+      console.log(`${time.startTime} to ${time.endTime as string}`);
       return `
         <li style="margin-bottom: 10px; padding: 10px; border-left: 4px solid #188977;">
           <strong>${formattedDate}</strong><br>
-          ${formatTime(time.startTime)} to ${formatTime(time.endTime as string)}
+          ${time.startTime} to ${time.endTime as string}
         </li>
       `;
     })
@@ -214,16 +211,8 @@ export async function POST(req: Request) {
       };
     });
 
-    // Format the alternative times for the notes
     const formattedTimes = timesWithEndTimes
       .map((time: AlternativeTime & { endTime: string }) => {
-        // Convert 24-hour format to 12-hour format for display
-        const formatTime = (timeStr: string) => {
-          const [hours, minutes] = timeStr.split(":").map(Number);
-          const period = hours >= 12 ? "PM" : "AM";
-          const hour12 = hours % 12 || 12;
-          return `${hour12}:${minutes.toString().padStart(2, "0")} ${period}`;
-        };
 
         // Format the date
         const date = new Date(time.date);
@@ -234,10 +223,9 @@ export async function POST(req: Request) {
           day: "numeric",
         });
 
-        return `- ${formattedDate} from ${formatTime(time.startTime)} to ${formatTime(time.endTime)}`;
+        return `- ${formattedDate} from ${time.startTime} to ${time.endTime}`;
       })
       .join("\n");
-
     // Update the booking with the proposed alternative times in the notes
     const updatedBooking = await prisma.booking.update({
       where: {
@@ -249,8 +237,6 @@ export async function POST(req: Request) {
           : `${new Date().toISOString()}: Proposed alternative times:\n${formattedTimes}\n\nMessage Sent: ${message}`,
       },
     });
-
-    console.log(updatedBooking);
 
     // Send email to the client with the alternative times
     if (booking.client.email) {
@@ -278,13 +264,11 @@ export async function POST(req: Request) {
           to: "info@primepears.com", //TODO Change this email variable
           subject: `Alternative Times for Your ${sessionType.charAt(0).toUpperCase() + sessionType.slice(1)} Session`,
           html: htmlContent,
-          text: `Hello ${clientName},\n\n${trainerName} has proposed alternative times for your upcoming session:\n\n${message}\n\nProposed Alternative Times:\n${formattedTimes}\n\nPlease reply to this email or contact ${trainerName} to confirm which time works for you.\n\nThank you,\n${trainerName}`,
+          text: `Hello ${clientName},\n\n${trainerName} has proposed alternative times for your upcoming session:\n\n${message}\n\nProposed Alternative Times Am I here:\n${formattedTimes}\n\nPlease reply to this email or contact ${trainerName} to confirm which time works for you.\n\nThank you,\n${trainerName}`,
         });
 
         if (error) {
           console.error("Email sending failed:", error);
-        } else {
-          console.log("Email sent successfully:", data);
         }
       } catch (emailError) {
         console.error("Error sending email:", emailError);

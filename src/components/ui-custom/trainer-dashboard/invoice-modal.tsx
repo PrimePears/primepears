@@ -19,10 +19,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Booking } from "@prisma/client";
 
 interface InvoiceModalProps {
   isOpen: boolean;
   onClose: () => void;
+  booking: Booking | null;
 }
 
 interface InvoiceItem {

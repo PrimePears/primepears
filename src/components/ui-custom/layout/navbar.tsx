@@ -33,12 +33,12 @@ interface ProfileProps {
 }
 
 function DashboardButton() {
-  // const { user } = useUser();
+  const { user } = useUser();
   {
     /* TODO : Fix link href={`/trainer-profile/dashboard/${user?.id}`} */
   }
   return (
-    <Link href={`/`}>
+    <Link href={`/trainer-profile/dashboard/${user?.id}`}>
       <Button
         variant="default"
         className="flex items-center gap-2 bg-custom-button-green hover:bg-custom-button-hover-green"
@@ -266,7 +266,10 @@ export default function NavBar({ profile }: { profile: ProfileProps | null }) {
 
                   {/* TODO : Fix link href={`/trainer-profile/dashboard/${user?.id}`} */}
                   {profile?.isTrainer && (
-                    <Link href={`/`} onClick={toggleMobileMenu}>
+                    <Link
+                      href={`/trainer-profile/dashboard/${user?.id}`}
+                      onClick={toggleMobileMenu}
+                    >
                       <Button
                         variant="default"
                         className="w-full justify-start bg-custom-button-green hover:bg-custom-button-hover-green"

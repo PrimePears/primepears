@@ -215,6 +215,7 @@ export async function PATCH(req: Request) {
           newStartTime: startTime,
           newEndTime: endTime,
         };
+        console.log("Email Data: ", emailData);
 
         const htmlContent = getUpdateTimeEmailTemplate(emailData);
 

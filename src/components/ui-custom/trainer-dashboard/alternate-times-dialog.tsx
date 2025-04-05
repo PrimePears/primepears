@@ -42,6 +42,7 @@ type Booking = {
 type AlternativeTime = {
   date: string;
   startTime: string;
+  endTime: string;
 };
 
 interface AlternateTimesDialogProps {
@@ -77,7 +78,7 @@ export function AlternateTimesDialog({
   };
 
   const [alternativeTimes, setAlternativeTimes] = useState<AlternativeTime[]>([
-    { date: "", startTime: "" },
+    { date: "", startTime: "", endTime: "" },
   ]);
   const [timeComponents, setTimeComponents] = useState<
     Array<{ hour: string; minute: string; period: string }>
@@ -109,7 +110,7 @@ export function AlternateTimesDialog({
       // setMessage(
       //   `Hi ${booking.client.name},\n\nI'm unable to accommodate our session on ${sessionDate} at ${booking.startTime}. Would any of these alternative times work for you?\n\nPlease let me know which option works best, or if none of these work for your schedule.`
       // );
-      setAlternativeTimes([{ date: "", startTime: "" }]);
+      setAlternativeTimes([{ date: "", startTime: "", endTime: "" }]);
       setTimeComponents([{ hour: "12", minute: "00", period: "AM" }]);
     }
     onOpenChange(newOpen);
@@ -126,7 +127,10 @@ export function AlternateTimesDialog({
   }, [open, booking]);
 
   const handleAddTimeSlot = () => {
-    setAlternativeTimes([...alternativeTimes, { date: "", startTime: "" }]);
+    setAlternativeTimes([
+      ...alternativeTimes,
+      { date: "", startTime: "", endTime: "" },
+    ]);
     setTimeComponents([
       ...timeComponents,
       { hour: "12", minute: "00", period: "AM" },
@@ -154,11 +158,16 @@ export function AlternateTimesDialog({
 
     // Update the actual startTime in alternativeTimes
     const newTimes = [...alternativeTimes];
-    newTimes[index].startTime = formatTime(
+    const formattedStartTime = formatTime(
       newTimeComponents[index].hour,
       newTimeComponents[index].minute,
       newTimeComponents[index].period
     );
+    newTimes[index].startTime = formattedStartTime;
+
+    // Calculate and store the endTime
+    newTimes[index].endTime = calculateEndTime(formattedStartTime);
+
     setAlternativeTimes(newTimes);
   };
 
@@ -192,9 +201,12 @@ export function AlternateTimesDialog({
       if (endHours > 12) endHours -= 12;
       if (endHours === 0) endHours = 12;
 
+    
+
       return `${endHours}:${String(endMinutes).padStart(2, "0")} ${endPeriod}`;
     } catch (e) {
       void e;
+
       return "";
     }
   };
@@ -206,6 +218,7 @@ export function AlternateTimesDialog({
       .map((time) => ({
         date: time.date,
         startTime: time.startTime,
+        endTime: time.endTime,
       }));
 
     // Only proceed if we have at least one valid time
@@ -216,7 +229,6 @@ export function AlternateTimesDialog({
 
     onConfirm(message, validTimes);
   };
-
 
   // Generate hour options (1-12)
   const hourOptions = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
